@@ -5,5 +5,9 @@
     "markdown": false,
     "scminput": false,
     "python": true
-  }
+  },
+  "eslint.enable": true,
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "editor.codeActionsOnSave": {},
+  "editor.formatOnSave": false
 }
