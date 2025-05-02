@@ -9,7 +9,7 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
-  ],
+, "src/mocks/fileStorageMock.ts"  ],
   "references": [
     {
       "path": "./tsconfig.app.json"

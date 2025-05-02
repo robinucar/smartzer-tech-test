@@ -1,15 +1,17 @@
+import '../mocks/fileStorageMock.ts'
 import request from 'supertest';
 import express from 'express';
 import usersRouter from '../../routes/users.routes';
 
+
 describe('users.routes', () => {
   const app = express();
-  app.use(express.json()); //parse JSON request bodies
+  app.use(express.json());
   app.use('/api/users', usersRouter);
 
   it('POST /api/users with valid payload returns 201 and user object', async () => {
     const newUser = { id: 2, name: 'Alice', dob: '1992-05-14' };
-    const res = await request(app).post('/api/users').send(newUser); // valid User object
+    const res = await request(app).post('/api/users').send(newUser);
     expect(res.status).toBe(201);
     expect(res.body).toEqual(newUser);
   });
@@ -24,7 +26,7 @@ describe('users.routes', () => {
   });
 
   it('POST /api/users with invalid payload returns 400', async () => {
-    const res = await request(app).post('/api/users').send({ name: 123 }); // invalid id
+    const res = await request(app).post('/api/users').send({ name: 123 });
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty('error');
   });

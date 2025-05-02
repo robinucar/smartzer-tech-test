@@ -1,28 +1,26 @@
 import { Router, Request, Response } from 'express';
+import { User } from '../types/types';
+import { readUsers, writeUsers } from '../utils/fileStorage';
 
 const router = Router();
+const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
-type User = {
-  id: number;
-  name: string;
-  dob: string;
-};
-
-const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/; // it is just for validate the date format YYYY-MM-DD
-
-
-router.get('/', (_req: Request, res: Response<User[]>) => {
-  const users: User[] = [{ id: 1, name: 'John Doe', dob: '1988-03-29' }];
-  res.status(200).json(users);
+router.get('/', async (_req: Request, res: Response<User[] | { error: string }>) => {
+  try {
+    const users = await readUsers();
+    res.status(200).json(users);
+  } catch {
+    res.status(500).json({ error: 'Failed to read users' });
+  }
 });
 
-router.post('/', (req: Request, res: Response<User | { error: string }>) => {
+router.post('/', async (req: Request, res: Response<User | { error: string }>) => {
   try {
     const body = req.body;
 
     if (
+      !body ||
       typeof body !== 'object' ||
-      body === null ||
       typeof body.id !== 'number' ||
       typeof body.name !== 'string' ||
       typeof body.dob !== 'string' ||
@@ -37,11 +35,15 @@ router.post('/', (req: Request, res: Response<User | { error: string }>) => {
       dob: body.dob,
     };
 
-    return res.status(201).json(newUser);
-  } catch (error) {
-    console.error('Unexpected error in POST /api/users:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    const users = await readUsers();
+    users.push(newUser);
+    await writeUsers(users);
+
+    res.status(201).json(newUser);
+  } catch {
+    res.status(500).json({ error: 'Failed to save user' });
   }
+  return
 });
 
 export default router;

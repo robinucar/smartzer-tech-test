@@ -1,5 +1,7 @@
+import './mocks/fileStorageMock.ts'
 import request from 'supertest';
 import app from '../app';
+
 
 describe('Express App', () => {
   it('GET /api should return welcome message', async () => {
@@ -18,5 +20,8 @@ describe('Express App', () => {
     const res = await request(app).get('/api/users');
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body[0]).toHaveProperty('id');
+    expect(res.body[0]).toHaveProperty('name');
+    expect(res.body[0]).toHaveProperty('dob');
   });
 });
