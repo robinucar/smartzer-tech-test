@@ -1,7 +1,6 @@
-import './mocks/fileStorageMock.ts'
+import './mocks/fileStorageMock.js';
 import request from 'supertest';
 import app from '../app';
-
 
 describe('Express App', () => {
   it('GET /api should return welcome message', async () => {

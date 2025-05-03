@@ -4,10 +4,11 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint . --ext .ts,.tsx",
-    "format": "prettier --check .",
-    "format:fix": "prettier --write .",
-    "test": "nx run-many --target=test --all"
+    "lint": "eslint . --ext .ts,.tsx --report-unused-disable-directives || exit 1",
+    "format": "prettier --write .",
+    "format:check": "prettier --check . || exit 1",
+    "format:staged": "pretty-quick --staged",
+    "test": "nx run-many --target=test --all --skip-nx-cache --output-style=stream || exit 1"
   },
   "private": true,
   "devDependencies": {
@@ -60,6 +61,7 @@
     "jsdom": "~22.1.0",
     "nx": "20.8.1",
     "prettier": "^2.6.2",
+    "pretty-quick": "^4.1.1",
     "react-refresh": "^0.10.0",
     "supertest": "^7.1.0",
     "ts-jest": "^29.1.0",

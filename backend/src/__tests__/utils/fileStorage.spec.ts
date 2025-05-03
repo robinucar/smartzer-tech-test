@@ -1,4 +1,3 @@
-
 import { readUsers, writeUsers } from '../../utils/fileStorage';
 import { promises as fs } from 'fs';
 import { User } from '../../types/types';
@@ -20,7 +19,10 @@ describe('fileStorage utility', () => {
   it('reads users from file', async () => {
     (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockUsers));
     const users = await readUsers();
-    expect(fs.readFile).toHaveBeenCalledWith(expect.stringContaining('users.json'), 'utf-8');
+    expect(fs.readFile).toHaveBeenCalledWith(
+      expect.stringContaining('users.json'),
+      'utf-8'
+    );
     expect(users).toEqual(mockUsers);
   });
 

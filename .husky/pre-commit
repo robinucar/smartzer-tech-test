@@ -1,4 +1,24 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npm run lint && npm run format && npm test
+set -e
+
+echo "🔍 Husky pre-commit hook triggered"
+
+echo "🔍 Running lint..."
+npm run lint
+
+echo "🧹 Formatting staged files..."
+npx pretty-quick --staged
+
+echo "🧪 Running tests..."
+npm test
+
+echo "🛡️ Running security audit CVE scan..."
+npm audit --audit-level=high || {
+  echo "❌ Security vulnerabilities found. Commit aborted."
+  exit 1
+}
+
+echo "✅ All checks passed. Proceeding with commit."
+echo "🔍 Husky pre-commit hook completed"

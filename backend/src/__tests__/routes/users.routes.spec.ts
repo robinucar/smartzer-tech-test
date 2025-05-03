@@ -1,8 +1,7 @@
-import '../mocks/fileStorageMock.ts'
+import '../mocks/fileStorageMock.js';
 import request from 'supertest';
 import express from 'express';
 import usersRouter from '../../routes/users.routes';
-
 
 describe('users.routes', () => {
   const app = express();

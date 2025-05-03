@@ -8,8 +8,9 @@
     "jest.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-, "src/mocks/fileStorageMock.ts"  ],
+    "src/**/*.d.ts",
+    "src/__tests__/mocks/fileStorageMock.ts"
+  ],
   "references": [
     {
       "path": "./tsconfig.app.json"
