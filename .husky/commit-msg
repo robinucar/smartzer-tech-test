@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+set -e  # Exit immediately on error
+
+echo "📩 Husky commit-msg hook triggered"
+echo "🧪 Running commitlint..."
+
+if npx commitlint --edit "$1"; then
+  echo "✅ Commit message is valid. Proceeding with commit."
+else
+  echo "❌ Invalid commit message. Commit aborted."
+  exit 1
+fi
+
+echo "📩 Husky commit-msg hook completed"
