@@ -13,7 +13,12 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.get('/api', (_req, res) => {
   res.send({ message: 'Welcome to backend!' });
 });
-
+/**
+ * Health check endpoint to confirm the server is running.
+ *
+ * @route GET /health
+ * @returns {{ status: string }} 200 - Status OK
+ */
 app.get('/health', (_req, res) => {
   res.status(200).send({ status: 'OK' });
 });

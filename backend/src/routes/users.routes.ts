@@ -4,7 +4,13 @@ import { readUsers, writeUsers } from '../utils/fileStorage';
 
 const router = Router();
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
+/**
+ * GET / - Fetch all users.
+ *
+ * @route GET /
+ * @returns {User[]} 200 - An array of user objects
+ * @returns {{ error: string }} 500 - Failed to read users
+ */
 router.get(
   '/',
   async (_req: Request, res: Response<User[] | { error: string }>) => {
@@ -16,7 +22,18 @@ router.get(
     }
   }
 );
-
+/**
+ * POST / - Create a new user.
+ *
+ * @route POST /
+ * @param {object} req.body - The user payload
+ * @param {number} req.body.id - The user's unique ID
+ * @param {string} req.body.name - The user's name
+ * @param {string} req.body.dob - The user's date of birth (ISO format: YYYY-MM-DD)
+ * @returns {User} 201 - Created user object
+ * @returns {{ error: string }} 400 - Invalid user payload
+ * @returns {{ error: string }} 500 - Failed to save user
+ */
 router.post(
   '/',
   async (req: Request, res: Response<User | { error: string }>) => {
