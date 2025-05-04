@@ -2,18 +2,10 @@ import { Router, Request, Response } from 'express';
 import { User } from '../types/types';
 import { readUsers, writeUsers } from '../utils/fileStorage';
 import { badRequest, notFound, serverError } from '../utils/errorResponse';
+import { parseUserId } from '../utils/parseUserId';
 
 const router = Router();
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
-
-/**
- * Parses the user ID from request params.
- * Returns null if invalid.
- */
-const parseUserId = (param: string): number | null => {
-  const id = Number(param);
-  return isNaN(id) ? null : id;
-};
 /**
  * @route GET /
  * @description Fetch all users.
