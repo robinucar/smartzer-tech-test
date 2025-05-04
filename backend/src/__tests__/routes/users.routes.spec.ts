@@ -60,19 +60,65 @@ describe('users.routes', () => {
     });
   });
 
+  describe('PUT /api/users/:id', () => {
+    it('should update user and return 200 for valid input', async () => {
+      const updatedUser = { name: 'Updated Name', dob: '1991-04-12' };
+      const res = await request(app).put('/api/users/1').send(updatedUser);
+
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ id: 1, ...updatedUser });
+    });
+
+    it('should return 400 for invalid user ID', async () => {
+      const res = await request(app)
+        .put('/api/users/invalid')
+        .send({ name: 'Test', dob: '1990-01-01' });
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: 'Invalid user ID' });
+    });
+
+    it('should return 400 for invalid payload', async () => {
+      const res = await request(app).put('/api/users/1').send({ name: 123 });
+
+      expect(res.status).toBe(400);
+      expect(res.body).toEqual({ error: 'Invalid user payload' });
+    });
+
+    it('should return 404 if user is not found', async () => {
+      const res = await request(app)
+        .put('/api/users/999')
+        .send({ name: 'Ghost', dob: '1992-01-01' });
+
+      expect(res.status).toBe(404);
+      expect(res.body).toEqual({ error: 'User not found' });
+    });
+
+    it('should return 500 if an exception is thrown', async () => {
+      const { mockWriteUsers } = require('../mocks/fileStorageMock');
+      mockWriteUsers.mockRejectedValueOnce(new Error('Disk full'));
+
+      const res = await request(app)
+        .put('/api/users/1')
+        .send({ name: 'Error', dob: '1990-01-01' });
+
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ error: 'Failed to update user.' });
+    });
+  });
   describe('DELETE /api/users/:id', () => {
-    it('DELETE /api/users/:id should delete user and return 204', async () => {
+    it('should delete user and return 204', async () => {
       const res = await request(app).delete('/api/users/1');
       expect(res.status).toBe(204);
     });
 
-    it('DELETE /api/users/:id should return 404 if user not found', async () => {
+    it('should return 404 if user not found', async () => {
       const res = await request(app).delete('/api/users/990');
       expect(res.status).toBe(404);
       expect(res.body).toEqual({ error: 'User not found' });
     });
 
-    it('DELETE /api/users/:id should return 400 for invalid ID', async () => {
+    it('should return 400 for invalid ID', async () => {
       const res = await request(app).delete('/api/users/abc');
       expect(res.status).toBe(400);
       expect(res.body).toEqual({ error: 'Invalid user ID' });

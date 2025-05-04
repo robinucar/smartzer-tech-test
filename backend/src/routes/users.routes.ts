@@ -5,9 +5,8 @@ import { readUsers, writeUsers } from '../utils/fileStorage';
 const router = Router();
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 /**
- * GET / - Fetch all users.
- *
  * @route GET /
+ * @description Fetch all users.
  * @returns {User[]} 200 - An array of user objects
  * @returns {{ error: string }} 500 - Failed to read users
  */
@@ -23,9 +22,8 @@ router.get(
   }
 );
 /**
- * POST / - Create a new user.
- *
  * @route POST /
+ * @description Create a new user
  * @param {object} req.body - The user payload
  * @param {number} req.body.id - The user's unique ID
  * @param {string} req.body.name - The user's name
@@ -98,8 +96,57 @@ router.get(
 );
 
 /**
+ * @route PUT /api/users/:id
+ * @description Update a user name, date of birth by id
+ * @param {object} req - Express request object
+ * @param {string} req.params.id - The ID of the user to update
+ * @param {string} req.body.name - The new name for the user
+ * @param {string} req.body.dob - The new date of birth in ISO format (YYYY-MM-DD)
+ * @returns {User} 200 - Successfully updated user
+ * @returns {{ error: string }} 400 - Invalid ID or payload
+ * @returns {{ error: string }} 404 - User not found
+ * @returns {{ error: string }} 500 - Failed to update user
+ */
+router.put(
+  '/:id',
+  async (req: Request, res: Response<User | { error: string }>) => {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      const { name, dob } = req.body;
+      if (
+        typeof name !== 'string' ||
+        typeof dob !== 'string' ||
+        !isoDateRegex.test(dob)
+      ) {
+        return res.status(400).json({ error: 'Invalid user payload' });
+      }
+
+      const users = await readUsers();
+      const userIndex = users.findIndex((u) => u.id === id);
+
+      if (userIndex === -1) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      const updatedUser: User = { id, name, dob };
+      users[userIndex] = updatedUser;
+      await writeUsers(users);
+
+      return res.status(200).json(updatedUser);
+    } catch (error) {
+      console.error('Update user error:', error);
+      return res.status(500).json({ error: 'Failed to update user.' });
+    }
+  }
+);
+/**
  * DELETE /api/users/:id - Deletes a user by ID.
- *
+ * @route DELETE /api/users/:id
+ * @description Delete a single user by their ID
  * @param req - Express request object containing user ID in params
  * @param res - Express response object
  * @returns 204 if deleted, 404 if not found, 400 if invalid ID, 500 if error
