@@ -1,4 +1,4 @@
-import '../mocks/fileStorageMock.js';
+import { mockUsers, resetMockUsers } from '../mocks/fileStorageMock';
 import request from 'supertest';
 import express from 'express';
 import usersRouter from '../../routes/users.routes';
@@ -11,6 +11,7 @@ app.use('/api/users', usersRouter);
 describe('users.routes', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    resetMockUsers();
   });
 
   describe('POST /api/users', () => {
@@ -43,7 +44,7 @@ describe('users.routes', () => {
     it('should return user when ID exists', async () => {
       const res = await request(app).get('/api/users/1');
       expect(res.status).toBe(200);
-      expect(res.body).toEqual({ id: 1, name: 'Test User', dob: '1990-01-01' });
+      expect(res.body).toEqual(mockUsers[0]);
     });
 
     it('should return 404 when user not found', async () => {
