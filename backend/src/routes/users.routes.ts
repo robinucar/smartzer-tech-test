@@ -69,4 +69,31 @@ router.post(
   }
 );
 
+/**
+ * @route GET /api/users/:id
+ * @description Fetch a single user by their ID
+ * @param {string} req.params.id - The ID of the user to fetch
+ * @returns {User | { error: string }} 200 with user if found, 404 if not found, 400 if invalid ID, 500 on failure
+ */
+router.get(
+  '/:id',
+  async (req: Request, res: Response<User | { error: string }>) => {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+      const users = await readUsers();
+      const user = users.find((u) => u.id === id);
+
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      return res.status(200).json(user);
+    } catch (error) {
+      console.error('Error fetching user by ID:', error);
+      return res.status(500).json({ error: 'Failed to fetch user' });
+    }
+  }
+);
 export default router;
