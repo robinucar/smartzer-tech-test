@@ -8,6 +8,8 @@ describe('parseUserId', () => {
   it('should return null for invalid input', () => {
     expect(parseUserId('abc')).toBeNull();
     expect(parseUserId('')).toBeNull();
-    expect(parseUserId('12.34')).toBe(12.34);
+    expect(parseUserId('   ')).toBeNull();
+    expect(parseUserId('12.34')).toBeNull();
+    expect(parseUserId('123abc')).toBeNull();
   });
 });
