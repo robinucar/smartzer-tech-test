@@ -96,4 +96,36 @@ router.get(
     }
   }
 );
+
+/**
+ * DELETE /api/users/:id - Deletes a user by ID.
+ *
+ * @param req - Express request object containing user ID in params
+ * @param res - Express response object
+ * @returns 204 if deleted, 404 if not found, 400 if invalid ID, 500 if error
+ */
+router.delete(
+  '/:id',
+  async (req: Request, res: Response<{ error: string } | void>) => {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+      const users = await readUsers();
+      const index = users.findIndex((u) => u.id === id);
+      if (index === -1) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      users.splice(index, 1);
+      await writeUsers(users);
+
+      return res.status(204).send();
+    } catch (error) {
+      console.error('Delete user error:', error);
+      return res.status(500).json({ error: 'Failed to delete user' });
+    }
+  }
+);
 export default router;

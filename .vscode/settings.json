@@ -1,10 +1,6 @@
 {
   "github.copilot.enable": {
-    "*": true,
-    "plaintext": false,
-    "markdown": false,
-    "scminput": false,
-    "python": true
+    "*": false
   },
   "eslint.enable": true,
   "eslint.validate": ["typescript", "typescriptreact"],
