@@ -4,6 +4,15 @@ import { readUsers, writeUsers } from '../utils/fileStorage';
 
 const router = Router();
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Parses the user ID from request params.
+ * Returns null if invalid.
+ */
+const parseUserId = (param: string): number | null => {
+  const id = Number(param);
+  return isNaN(id) ? null : id;
+};
 /**
  * @route GET /
  * @description Fetch all users.
@@ -15,9 +24,9 @@ router.get(
   async (_req: Request, res: Response<User[] | { error: string }>) => {
     try {
       const users = await readUsers();
-      res.status(200).json(users);
+      return res.status(200).json(users);
     } catch {
-      res.status(500).json({ error: 'Failed to read users' });
+      return res.status(500).json({ error: 'Failed to read users' });
     }
   }
 );
@@ -59,11 +68,10 @@ router.post(
       users.push(newUser);
       await writeUsers(users);
 
-      res.status(201).json(newUser);
+      return res.status(201).json(newUser);
     } catch {
-      res.status(500).json({ error: 'Failed to save user' });
+      return res.status(500).json({ error: 'Failed to save user' });
     }
-    return;
   }
 );
 
@@ -77,8 +85,8 @@ router.get(
   '/:id',
   async (req: Request, res: Response<User | { error: string }>) => {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
+      const id = parseUserId(req.params.id);
+      if (id === null) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
       const users = await readUsers();
@@ -111,8 +119,8 @@ router.put(
   '/:id',
   async (req: Request, res: Response<User | { error: string }>) => {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
+      const id = parseUserId(req.params.id);
+      if (id === null) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
 
@@ -155,8 +163,8 @@ router.delete(
   '/:id',
   async (req: Request, res: Response<{ error: string } | void>) => {
     try {
-      const id = Number(req.params.id);
-      if (isNaN(id)) {
+      const id = parseUserId(req.params.id);
+      if (id === null) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
       const users = await readUsers();
