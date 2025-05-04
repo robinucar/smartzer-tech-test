@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { User } from '../types/types';
 import { readUsers, writeUsers } from '../utils/fileStorage';
+import { badRequest, notFound, serverError } from '../utils/errorResponse';
 
 const router = Router();
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -17,7 +18,7 @@ const parseUserId = (param: string): number | null => {
  * @route GET /
  * @description Fetch all users.
  * @returns {User[]} 200 - An array of user objects
- * @returns {{ error: string }} 500 - Failed to read users
+ * @returns {{ error: string }} serverError - 500 - Failed to read users
  */
 router.get(
   '/',
@@ -26,7 +27,7 @@ router.get(
       const users = await readUsers();
       return res.status(200).json(users);
     } catch {
-      return res.status(500).json({ error: 'Failed to read users' });
+      return serverError(res, 'Failed to read users');
     }
   }
 );
@@ -38,8 +39,8 @@ router.get(
  * @param {string} req.body.name - The user's name
  * @param {string} req.body.dob - The user's date of birth (ISO format: YYYY-MM-DD)
  * @returns {User} 201 - Created user object
- * @returns {{ error: string }} 400 - Invalid user payload
- * @returns {{ error: string }} 500 - Failed to save user
+ * @returns {{ error: string }} badRequest - 400 - Invalid user payload
+ * @returns {{ error: string }} serverError - 500 - Failed to save user
  */
 router.post(
   '/',
@@ -55,7 +56,7 @@ router.post(
         typeof body.dob !== 'string' ||
         !isoDateRegex.test(body.dob)
       ) {
-        return res.status(400).json({ error: 'Invalid user payload' });
+        return badRequest(res, 'Invalid user payload');
       }
 
       const newUser: User = {
@@ -70,7 +71,7 @@ router.post(
 
       return res.status(201).json(newUser);
     } catch {
-      return res.status(500).json({ error: 'Failed to save user' });
+      return serverError(res, 'Failed to save user');
     }
   }
 );
@@ -79,7 +80,10 @@ router.post(
  * @route GET /api/users/:id
  * @description Fetch a single user by their ID
  * @param {string} req.params.id - The ID of the user to fetch
- * @returns {User | { error: string }} 200 with user if found, 404 if not found, 400 if invalid ID, 500 on failure
+ * @returns {User} 200 with user if found,
+ * @returns {{ error: string }} badRequest - 400 - Invalid ID
+ * @returns {{ error: string }} notFound - 404 - User not found
+ * @returns {{ error: string }} serverError - 500 - Failed to update user
  */
 router.get(
   '/:id',
@@ -87,18 +91,18 @@ router.get(
     try {
       const id = parseUserId(req.params.id);
       if (id === null) {
-        return res.status(400).json({ error: 'Invalid user ID' });
+        return badRequest(res, 'Invalid user ID');
       }
       const users = await readUsers();
       const user = users.find((u) => u.id === id);
 
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return notFound(res, 'User not found');
       }
       return res.status(200).json(user);
     } catch (error) {
       console.error('Error fetching user by ID:', error);
-      return res.status(500).json({ error: 'Failed to fetch user' });
+      return serverError(res, 'Failed to fetch user');
     }
   }
 );
@@ -111,9 +115,9 @@ router.get(
  * @param {string} req.body.name - The new name for the user
  * @param {string} req.body.dob - The new date of birth in ISO format (YYYY-MM-DD)
  * @returns {User} 200 - Successfully updated user
- * @returns {{ error: string }} 400 - Invalid ID or payload
- * @returns {{ error: string }} 404 - User not found
- * @returns {{ error: string }} 500 - Failed to update user
+ * @returns {{ error: string }} badRequest - 400 - Invalid ID or payload
+ * @returns {{ error: string }} notFound - 404 - User not found
+ * @returns {{ error: string }} serverError - 500 - Failed to update user
  */
 router.put(
   '/:id',
@@ -121,7 +125,7 @@ router.put(
     try {
       const id = parseUserId(req.params.id);
       if (id === null) {
-        return res.status(400).json({ error: 'Invalid user ID' });
+        return badRequest(res, 'Invalid user ID');
       }
 
       const { name, dob } = req.body;
@@ -130,14 +134,14 @@ router.put(
         typeof dob !== 'string' ||
         !isoDateRegex.test(dob)
       ) {
-        return res.status(400).json({ error: 'Invalid user payload' });
+        return badRequest(res, 'Invalid user payload');
       }
 
       const users = await readUsers();
       const userIndex = users.findIndex((u) => u.id === id);
 
       if (userIndex === -1) {
-        return res.status(404).json({ error: 'User not found' });
+        return notFound(res, 'User not found');
       }
 
       const updatedUser: User = { id, name, dob };
@@ -147,7 +151,7 @@ router.put(
       return res.status(200).json(updatedUser);
     } catch (error) {
       console.error('Update user error:', error);
-      return res.status(500).json({ error: 'Failed to update user.' });
+      return serverError(res, 'Failed to update user.');
     }
   }
 );
@@ -157,7 +161,10 @@ router.put(
  * @description Delete a single user by their ID
  * @param req - Express request object containing user ID in params
  * @param res - Express response object
- * @returns 204 if deleted, 404 if not found, 400 if invalid ID, 500 if error
+ * @returns 204 if Successfully delete user
+ * @returns {{ error: string }} badRequest - 400 - Invalid ID
+ * @returns {{ error: string }} notFound - 404 - User not found
+ * @returns {{ error: string }} serverError - 500 - Failed to update user
  */
 router.delete(
   '/:id',
@@ -165,12 +172,12 @@ router.delete(
     try {
       const id = parseUserId(req.params.id);
       if (id === null) {
-        return res.status(400).json({ error: 'Invalid user ID' });
+        return badRequest(res, 'Invalid user ID');
       }
       const users = await readUsers();
       const index = users.findIndex((u) => u.id === id);
       if (index === -1) {
-        return res.status(404).json({ error: 'User not found' });
+        return notFound(res, 'User not found');
       }
 
       users.splice(index, 1);
@@ -179,7 +186,7 @@ router.delete(
       return res.status(204).send();
     } catch (error) {
       console.error('Delete user error:', error);
-      return res.status(500).json({ error: 'Failed to delete user' });
+      return serverError(res, 'Failed to delete user');
     }
   }
 );
