@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import type { User } from '../../types/types';
+import type { User } from '@shared-types';
 
 /**
  * In-memory mock user data used by read and write mocks.

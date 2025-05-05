@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { UserPayload } from '../types/types';
+import { UserPayload } from '@shared-types';
 import { readUsers, writeUsers } from '../utils/fileStorage';
 import { badRequest, notFound, serverError } from '../utils/errorResponse';
 import { parseUserId } from '../utils/parseUserId';

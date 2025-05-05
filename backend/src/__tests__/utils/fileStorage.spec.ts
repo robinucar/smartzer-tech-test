@@ -1,6 +1,6 @@
 import { readUsers, writeUsers } from '../../utils/fileStorage';
 import { promises as fs } from 'fs';
-import { User } from '../../types/types';
+import { User } from '@shared-types';
 
 jest.mock('fs', () => ({
   promises: {

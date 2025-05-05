@@ -1,5 +1,5 @@
 /// <reference types="jest" />
-import { User } from '../../types/types';
+import { User } from '@shared-types';
 
 export const userWithBio: User = {
   id: 2,

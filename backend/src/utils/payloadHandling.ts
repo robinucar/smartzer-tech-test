@@ -1,4 +1,4 @@
-import { User, UserPayload } from '../types/types';
+import { User, UserPayload } from '@shared-types';
 
 /**
  * Regular expression to validate ISO 8601 date strings in the format YYYY-MM-DD.

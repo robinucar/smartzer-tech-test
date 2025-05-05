@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
+  }
+]
