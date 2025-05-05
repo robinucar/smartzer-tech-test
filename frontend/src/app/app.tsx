@@ -1,16 +1,29 @@
-import styled from 'styled-components';
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
+import { theme } from '../lib/theme';
 import NxWelcome from './nx-welcome';
 
-const StyledApp = styled.div`
-  // Your style here
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    background-color: ${({ theme }) => theme.colors.background};
+    font-family: Arial, sans-serif;
+    color: ${({ theme }) => theme.colors.text};
+  }
 `;
 
-export function App() {
+const AppWrapper = styled.div`
+  padding: ${({ theme }) => theme.spacing.md};
+`;
+
+const App = () => {
   return (
-    <StyledApp>
-      <NxWelcome title="@smartzer-tech-test/frontend" />
-    </StyledApp>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <AppWrapper>
+        <NxWelcome title="@smartzer-tech-test/frontend" />
+      </AppWrapper>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
