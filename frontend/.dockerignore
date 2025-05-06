@@ -1,0 +1,8 @@
+node_modules
+dist
+out-tsc
+.nx
+.git
+.gitignore
+README.md
+*.log
