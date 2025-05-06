@@ -77,22 +77,54 @@ export const UserList = ({ users }: UserListProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {sortUsersByName(users).map((user) => (
-              <Tr key={user.id}>
-                <Td>
-                  <EyeButton onClick={() => handleOpenModal(user)}>👁</EyeButton>
-                </Td>
-                <Td>
-                  {capitalize(user.firstName)} {capitalize(user.lastName)}
-                </Td>
-                <Td>{user.dob}</Td>
-                <Td>
-                  <button onClick={() => setPendingDelete(String(user.id))}>
-                    🗑
-                  </button>
-                </Td>
-              </Tr>
-            ))}
+            {sortUsersByName(users).map((user) => {
+              const isViewing = selectedUser?.id === user.id && isModalOpen;
+              return (
+                <Tr key={user.id}>
+                  <Td>
+                    <EyeButton
+                      onClick={() => handleOpenModal(user)}
+                      aria-label="View user"
+                    >
+                      <img
+                        src={
+                          isViewing
+                            ? '/icons/view-off.svg'
+                            : '/icons/view-outline.svg'
+                        }
+                        alt="View user"
+                        width={20}
+                        height={20}
+                      />
+                    </EyeButton>
+                  </Td>
+                  <Td>
+                    {capitalize(user.firstName)} {capitalize(user.lastName)}
+                  </Td>
+                  <Td>{user.dob}</Td>
+                  <Td>
+                    <button
+                      onClick={() => setPendingDelete(String(user.id))}
+                      aria-label="Delete user"
+                      style={{
+                        background: 'none',
+                        border: '1px solid',
+                        borderRadius: '30%',
+                        cursor: 'pointer',
+                        color: 'red',
+                      }}
+                    >
+                      <img
+                        src="/icons/delete-outline.svg"
+                        alt="Delete user"
+                        width={20}
+                        height={20}
+                      />
+                    </button>
+                  </Td>
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </TableWrapper>
