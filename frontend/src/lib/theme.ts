@@ -4,6 +4,7 @@ export const theme = {
     secondary: '#fff',
     background: '#f7f7f7',
     text: '#333',
+    gray: '#ccc',
   },
   spacing: {
     sm: '8px',
