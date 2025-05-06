@@ -5,6 +5,7 @@ export const theme = {
     background: '#f7f7f7',
     text: '#333',
     gray: '#ccc',
+    border: '#ddd',
   },
   spacing: {
     sm: '8px',

@@ -1,1 +1,52 @@
-[]
+[
+  {
+    "id": 2,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice2@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
+  },
+  {
+    "id": 3,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice3@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
+  },
+  {
+    "id": 4,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice4@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
+  },
+  {
+    "id": 5,
+    "firstName": "Robin",
+    "lastName": "Winters",
+    "email": "robinmelsaw@gmail.com",
+    "dob": "1988-03-29",
+    "imageUrl": "https://picsum.photos/seed/1746533709815/200/200",
+    "acceptedTerms": true,
+    "bio": ""
+  },
+  {
+    "id": 6,
+    "firstName": "Robin",
+    "lastName": "Winters",
+    "email": "robinmelsaw1@gmail.com",
+    "dob": "1988-03-29",
+    "imageUrl": "https://picsum.photos/seed/1746533921451/200/200",
+    "acceptedTerms": true,
+    "bio": ""
+  }
+]

@@ -1,7 +1,10 @@
-import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { theme } from '../lib/theme';
 import { UserList } from '../components/UserList/UserList';
-
+import { UserModal } from '../components/UserModal/UserModal';
+import { useState } from 'react';
+import { ViewToggleButton } from '../components/shared/ViewToggleButton/ViewToggleButton.style';
+import { AppWrapper, Controls } from './app.styles';
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
     height: 100%;
@@ -15,19 +18,33 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const AppWrapper = styled.div`
-  padding: ${({ theme }) => theme.spacing.md};
-`;
+const App = () => {
+  const [isModalOpen, setModalOpen] = useState(false);
 
-const App = () => (
-  <ThemeProvider theme={theme}>
-    <GlobalStyle />
-    <main role="main">
-      <AppWrapper>
-        <UserList />
-      </AppWrapper>
-    </main>
-  </ThemeProvider>
-);
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <main role="main">
+        <AppWrapper>
+          <Controls>
+            <ViewToggleButton>List view</ViewToggleButton>
+            <ViewToggleButton>Grid view</ViewToggleButton>
+            <ViewToggleButton onClick={() => setModalOpen(true)}>
+              Create user
+            </ViewToggleButton>
+          </Controls>
+
+          <UserList />
+
+          <UserModal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            user={null}
+          />
+        </AppWrapper>
+      </main>
+    </ThemeProvider>
+  );
+};
 
 export default App;

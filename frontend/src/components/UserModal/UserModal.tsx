@@ -1,22 +1,25 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import {
+  useState,
+  useEffect,
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+} from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { User } from '@shared-types';
-import { updateUser } from '../../lib/api/users';
+import { updateUser, createUser } from '../../lib/api/users';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
+import { ImagePreviewBlock } from './ImagePreviewBlock';
+import { UserFormFields } from './UserFormFields';
 import {
   Overlay,
   Modal,
-  Field,
-  Label,
-  Input,
-  TextArea,
   ButtonGroup,
   Button,
-  FlexRow,
-  CheckboxContainer,
-  DateInput,
   ErrorText,
   CloseIcon,
+  Spinner,
+  FlexRow,
 } from './UserModal.style';
 
 interface UserModalProps {
@@ -31,32 +34,54 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
   const [isUpdated, setIsUpdated] = useState(false);
   const queryClient = useQueryClient();
 
+  const generateImageUrl = useCallback(
+    () => `https://picsum.photos/seed/${Date.now()}/200/200`,
+    []
+  );
   const mutation = useMutation({
-    mutationFn: (data: Partial<User>) => updateUser(String(user?.id), data),
+    mutationFn: (data: Partial<User>) =>
+      user?.id ? updateUser(String(user.id), data) : createUser(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       setIsUpdated(true);
+
+      setTimeout(() => {
+        if (!user?.id) {
+          setFormData({
+            acceptedTerms: false,
+            imageUrl: generateImageUrl(),
+          });
+        }
+        setIsUpdated(false);
+        onClose();
+      }, 1000);
     },
     onError: () => {
-      setErrors({ form: 'Failed to update user. Please try again.' });
+      setErrors({
+        form: user?.id
+          ? 'Failed to update user. Please try again.'
+          : 'Failed to create user. Please try again.',
+      });
     },
   });
 
   useEffect(() => {
-    if (isOpen && user) {
-      const isoDob = user.dob
-        ? new Date(user.dob).toISOString().split('T')[0]
-        : '';
-      setFormData({ ...user, dob: isoDob });
-      setErrors({});
-    }
-  }, [isOpen, user]);
-
-  useEffect(() => {
     if (isOpen) {
+      if (user) {
+        const isoDob = user.dob
+          ? new Date(user.dob).toISOString().split('T')[0]
+          : '';
+        setFormData({ ...user, dob: isoDob });
+      } else {
+        setFormData({
+          acceptedTerms: false,
+          imageUrl: generateImageUrl(),
+        });
+      }
+      setErrors({});
       setIsUpdated(false);
     }
-  }, [isOpen]);
+  }, [generateImageUrl, isOpen, user]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,7 +92,15 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value.trim(),
+      [name]:
+        type === 'checkbox' ? checked : name === 'bio' ? value : value.trim(),
+    }));
+  };
+
+  const handleNextImage = () => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: generateImageUrl(),
     }));
   };
 
@@ -89,97 +122,60 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!validateForm() || !user) return;
-    mutation.mutate(formData);
+    if (!validateForm()) return;
+
+    const payload = {
+      ...formData,
+      dob: formData.dob
+        ? new Date(formData.dob).toISOString().split('T')[0]
+        : undefined,
+      imageUrl: formData.imageUrl || generateImageUrl(),
+    };
+
+    mutation.mutate(payload);
   };
 
-  if (!isOpen || !user) return null;
+  if (!isOpen) return null;
 
   return (
-    <Overlay aria-labelledby="user-modal-title">
+    <Overlay aria-labelledby="user-modal-title" role="dialog" aria-modal="true">
       <Modal>
         <CloseIcon onClick={onClose} aria-label="Close modal">
           ×
         </CloseIcon>
-        <h2 id="user-modal-title">{user.id ? 'Edit' : 'Create'} User</h2>
+        <h2 id="user-modal-title">{user?.id ? 'Edit' : 'Add new'} user</h2>
 
-        {isUpdated && <SuccessMessage message="User updated successfully!" />}
+        {isUpdated && (
+          <SuccessMessage
+            message={
+              user?.id
+                ? 'User updated successfully!'
+                : 'User created successfully!'
+            }
+          />
+        )}
         {errors.form && <ErrorText role="alert">{errors.form}</ErrorText>}
 
         <form onSubmit={handleSubmit}>
-          <Field>
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              name="firstName"
-              value={formData.firstName || ''}
-              onChange={handleChange}
-            />
-            {errors.firstName && <ErrorText>{errors.firstName}</ErrorText>}
-          </Field>
-
-          <Field>
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              name="lastName"
-              value={formData.lastName || ''}
-              onChange={handleChange}
-            />
-            {errors.lastName && <ErrorText>{errors.lastName}</ErrorText>}
-          </Field>
-
-          <Field>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              name="email"
-              value={formData.email || ''}
-              onChange={handleChange}
-            />
-            {errors.email && <ErrorText>{errors.email}</ErrorText>}
-          </Field>
-
-          <Field>
-            <Label htmlFor="bio">Bio</Label>
-            <TextArea
-              name="bio"
-              value={formData.bio || ''}
-              onChange={handleChange}
-            />
-          </Field>
-
           <FlexRow>
-            <div>
-              <Label htmlFor="dob">DOB</Label>
-              <DateInput
-                name="dob"
-                type="date"
-                value={formData.dob || ''}
-                onChange={handleChange}
+            <UserFormFields
+              formData={formData}
+              errors={errors}
+              handleChange={handleChange}
+            >
+              <ImagePreviewBlock
+                imageUrl={formData.imageUrl}
+                onNext={handleNextImage}
               />
-              {errors.dob && <ErrorText>{errors.dob}</ErrorText>}
-            </div>
-
-            <CheckboxContainer htmlFor="acceptedTerms">
-              Accept T&Cs
-              <input
-                id="acceptedTerms"
-                type="checkbox"
-                name="acceptedTerms"
-                checked={formData.acceptedTerms || false}
-                onChange={handleChange}
-              />
-            </CheckboxContainer>
+            </UserFormFields>
           </FlexRow>
-
-          {errors.acceptedTerms && (
-            <ErrorText>{errors.acceptedTerms}</ErrorText>
-          )}
 
           <ButtonGroup>
             <Button type="button" onClick={onClose}>
               {isUpdated ? 'Close' : 'Cancel'}
             </Button>
             <Button type="submit" disabled={mutation.isPending}>
-              Save
+              {mutation.isPending ? <Spinner /> : 'Save'}
             </Button>
           </ButtonGroup>
         </form>

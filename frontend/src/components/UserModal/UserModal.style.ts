@@ -135,3 +135,50 @@ export const SuccessText = styled.p<React.HTMLAttributes<HTMLParagraphElement>>`
   font-weight: bold;
   margin-bottom: 1rem;
 `;
+export const ImageWrapper = styled.div<React.HTMLAttributes<HTMLDivElement>>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 2rem;
+  flex-shrink: 0;
+`;
+
+export const ImagePreview = styled.img.attrs({
+  role: 'img',
+  alt: 'User image preview',
+})<React.ImgHTMLAttributes<HTMLImageElement>>`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.border || '#ccc'};
+`;
+export const Spinner = styled.div<React.HTMLAttributes<HTMLDivElement>>`
+  border: 3px solid ${({ theme }) => theme.colors.border};
+  border-top: 3px solid ${({ theme }) => theme.colors.primary};
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+export const FormFieldsWrapper = styled.div<
+  React.HTMLAttributes<HTMLDivElement>
+>`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;

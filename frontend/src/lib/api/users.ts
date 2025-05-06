@@ -8,6 +8,18 @@ export const getUsers = async (): Promise<User[]> => {
   return res.json();
 };
 
+export const createUser = async (userData: Partial<User>) => {
+  const res = await fetch(`${BASE_URL}/users`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!res.ok) throw new Error('Failed to create user');
+  return res.json();
+};
 export const updateUser = async (id: string, userData: Partial<User>) => {
   const res = await fetch(`${BASE_URL}/users/${id}`, {
     method: 'PUT',
