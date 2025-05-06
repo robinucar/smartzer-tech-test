@@ -1,29 +1,54 @@
 import styled from 'styled-components';
 
-export const List = styled.ul.attrs({})<React.HTMLAttributes<HTMLUListElement>>`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+export const TableWrapper = styled.div`
+  overflow-x: auto;
+  width: 100%;
+  margin-top: ${({ theme }) => theme.spacing.md};
 `;
 
-export const ListItem = styled.li.attrs({})<
-  React.LiHTMLAttributes<HTMLLIElement>
+export const Table = styled.table.attrs({
+  role: 'table',
+})<React.TableHTMLAttributes<HTMLTableElement>>`
+  width: 100%;
+  border-collapse: collapse;
+  background-color: ${({ theme }) => theme.colors.background};
+`;
+
+export const Thead = styled.thead<
+  React.HTMLAttributes<HTMLTableSectionElement>
 >`
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.secondary};
+`;
+
+export const Tbody = styled.tbody<
+  React.HTMLAttributes<HTMLTableSectionElement>
+>``;
+
+export const Tr = styled.tr<React.HTMLAttributes<HTMLTableRowElement>>`
+  &:nth-child(even) {
+    background-color: ${({ theme }) => theme.colors.gray};
+  }
+`;
+
+export const Th = styled.th<React.ThHTMLAttributes<HTMLTableCellElement>>`
   padding: ${({ theme }) => theme.spacing.sm};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.gray || '#ccc'};
+  text-align: left;
 `;
 
-export const UserName = styled.h2.attrs({})<
-  React.HTMLAttributes<HTMLHeadingElement>
->`
+export const Td = styled.td<React.TdHTMLAttributes<HTMLTableCellElement>>`
+  padding: ${({ theme }) => theme.spacing.sm};
+`;
+
+export const EyeButton = styled.button.attrs({
+  type: 'button',
+})<React.ButtonHTMLAttributes<HTMLButtonElement>>`
+  background: none;
+  border: none;
+  cursor: pointer;
   font-size: 1.2rem;
-  margin: 0 0 0.5rem 0;
-`;
 
-export const UserDob = styled.p.attrs({})<
-  React.HTMLAttributes<HTMLParagraphElement>
->`
-  margin: 0;
-  font-size: 1rem;
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+  }
 `;

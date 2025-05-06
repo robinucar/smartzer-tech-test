@@ -8,5 +8,35 @@
     "imageUrl": "https://picsum.photos/200",
     "acceptedTerms": true,
     "bio": "Hello!"
+  },
+  {
+    "id": 2,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice1@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
+  },
+  {
+    "id": 3,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice2@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
+  },
+  {
+    "id": 4,
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "email": "alice3@example.com",
+    "dob": "1990-01-01",
+    "imageUrl": "https://picsum.photos/200",
+    "acceptedTerms": true,
+    "bio": "Hello!"
   }
 ]
