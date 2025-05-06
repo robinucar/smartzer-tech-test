@@ -1,0 +1,45 @@
+name: Publish Docker Compose File
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-compose:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Generate docker-compose.yml
+        run: |
+          cat <<EOF > docker-compose.yml
+          version: '3.8'
+
+          services:
+            backend:
+              image: robinwinters/smartzer-backend:latest
+              container_name: smartzer-backend
+              ports:
+                - "3333:3333"
+              restart: always
+
+            frontend:
+              image: robinwinters/smartzer-frontend:latest
+              container_name: smartzer-frontend
+              ports:
+                - "4200:80"
+              depends_on:
+                - backend
+              restart: always
+          EOF
+
+      - name: Commit and push docker-compose.yml
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docker-compose.yml
+          git commit -m "Update docker-compose.yml [auto]" || echo "No changes"
+          git push
