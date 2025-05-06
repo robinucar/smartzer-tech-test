@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getUsers } from '../../lib/api/users';
 import { User } from '@shared-types';
+import { UserModal } from '../UserModal/UserModal';
+import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
+import { Loading } from '../shared/Loading/Loading';
 import {
   TableWrapper,
   Table,
@@ -12,54 +16,60 @@ import {
   EyeButton,
 } from './UserList.styles';
 
-type UserListProps = {
-  users?: User[];
-};
-
-export const UserList = ({ users }: UserListProps) => {
-  const {
-    data: fetchedUsers,
-    isLoading,
-    isError,
-  } = useQuery<User[]>({
+export const UserList = () => {
+  const { data, isLoading, isError } = useQuery<User[]>({
     queryKey: ['users'],
     queryFn: getUsers,
-    enabled: !users,
   });
 
-  const dataToRender = users ?? fetchedUsers;
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  if (isLoading) return <p>Loading users...</p>;
-  if (isError || !dataToRender) return <p>Failed to load users.</p>;
+  const handleOpenModal = (user: User) => {
+    setSelectedUser(user);
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedUser(null);
+    setModalOpen(false);
+  };
+
+  if (isLoading) return <Loading />;
+  if (isError || !data) return <ErrorMessage message="Failed to load users." />;
 
   return (
-    <TableWrapper>
-      <Table aria-label="User list">
-        <Thead>
-          <Tr>
-            <Th scope="col" aria-hidden="true"></Th>
-            <Th scope="col">Name</Th>
-            <Th scope="col">Date of Birth</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {dataToRender.map((user) => (
-            <Tr key={user.id}>
-              <Td>
-                <EyeButton
-                  aria-label={`View ${user.firstName} ${user.lastName}`}
-                >
-                  👁
-                </EyeButton>
-              </Td>
-              <Td>
-                {user.firstName} {user.lastName}
-              </Td>
-              <Td>{user.dob}</Td>
+    <>
+      <TableWrapper>
+        <Table aria-label="User list">
+          <Thead>
+            <Tr>
+              <Th></Th>
+              <Th>Name</Th>
+              <Th>Date of Birth</Th>
             </Tr>
-          ))}
-        </Tbody>
-      </Table>
-    </TableWrapper>
+          </Thead>
+          <Tbody>
+            {data.map((user) => (
+              <Tr key={user.id}>
+                <Td>
+                  <EyeButton onClick={() => handleOpenModal(user)}>👁</EyeButton>
+                </Td>
+                <Td>
+                  {user.firstName} {user.lastName}
+                </Td>
+                <Td>{user.dob}</Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </TableWrapper>
+
+      <UserModal
+        user={selectedUser}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
+    </>
   );
 };
