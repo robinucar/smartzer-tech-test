@@ -58,7 +58,6 @@ export const UserFormFields: FC<UserFormFieldsProps> = ({
       {errors.email && <ErrorText>{errors.email}</ErrorText>}
     </Field>
 
-    {/* 👇 Side-by-side Bio + Image */}
     <FlexRow>
       <Field style={{ flex: 1 }}>
         <Label htmlFor="bio">Bio</Label>

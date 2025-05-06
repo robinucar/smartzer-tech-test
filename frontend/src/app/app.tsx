@@ -1,10 +1,18 @@
-import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import { theme } from '../lib/theme';
-import { UserList } from '../components/UserList/UserList';
-import { UserModal } from '../components/UserModal/UserModal';
 import { useState } from 'react';
-import { ViewToggleButton } from '../components/shared/ViewToggleButton/ViewToggleButton.style';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
+
+import { theme } from '../lib/theme';
 import { AppWrapper, Controls } from './app.styles';
+import { ViewToggleButton } from '../components/shared/ViewToggleButton/ViewToggleButton.style';
+import { UserModal } from '../components/UserModal/UserModal';
+import { UserList } from '../components/UserList/UserList';
+import { UserGridView } from '../components/UserGridView/UserGridView';
+import { UserImageModal } from '../components/UserImageModal/UserImageModal';
+import { Loading } from '../components/shared/Loading/Loading';
+import { ErrorMessage } from '../components/shared/ErrorMessage/ErrorMessage';
+import { useUser } from '../Hooks/useUser';
+import { User } from '@shared-types';
+
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
     height: 100%;
@@ -19,7 +27,20 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
+  const [view, setView] = useState<'list' | 'grid'>(() => {
+    const saved = localStorage.getItem('view');
+    return saved === 'grid' ? 'grid' : 'list';
+  });
+
   const [isModalOpen, setModalOpen] = useState(false);
+  const [previewUser, setPreviewUser] = useState<User | null>(null);
+
+  const { users, isLoading, isError } = useUser();
+
+  const handleViewChange = (newView: 'list' | 'grid') => {
+    setView(newView);
+    localStorage.setItem('view', newView);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -27,20 +48,49 @@ const App = () => {
       <main role="main">
         <AppWrapper>
           <Controls>
-            <ViewToggleButton>List view</ViewToggleButton>
-            <ViewToggleButton>Grid view</ViewToggleButton>
+            <ViewToggleButton
+              onClick={() => handleViewChange('list')}
+              aria-pressed={view === 'list'}
+            >
+              List view
+            </ViewToggleButton>
+
+            <ViewToggleButton
+              onClick={() => handleViewChange('grid')}
+              aria-pressed={view === 'grid'}
+            >
+              Grid view
+            </ViewToggleButton>
+
             <ViewToggleButton onClick={() => setModalOpen(true)}>
               Create user
             </ViewToggleButton>
           </Controls>
 
-          <UserList />
+          {isLoading && <Loading />}
+          {isError && <ErrorMessage message="Failed to load users." />}
+
+          {!isLoading &&
+            !isError &&
+            (view === 'list' ? (
+              <UserList users={users} />
+            ) : (
+              <UserGridView users={users} onImageClick={setPreviewUser} />
+            ))}
 
           <UserModal
             isOpen={isModalOpen}
             onClose={() => setModalOpen(false)}
             user={null}
           />
+
+          {previewUser && (
+            <UserImageModal
+              imageUrl={previewUser.imageUrl}
+              userName={`${previewUser.firstName} ${previewUser.lastName}`}
+              onClose={() => setPreviewUser(null)}
+            />
+          )}
         </AppWrapper>
       </main>
     </ThemeProvider>

@@ -1,52 +1,102 @@
 [
   {
-    "id": 2,
-    "firstName": "Alice",
-    "lastName": "Smith",
-    "email": "alice2@example.com",
-    "dob": "1990-01-01",
-    "imageUrl": "https://picsum.photos/200",
-    "acceptedTerms": true,
-    "bio": "Hello!"
-  },
-  {
-    "id": 3,
-    "firstName": "Alice",
-    "lastName": "Smith",
-    "email": "alice3@example.com",
-    "dob": "1990-01-01",
-    "imageUrl": "https://picsum.photos/200",
-    "acceptedTerms": true,
-    "bio": "Hello!"
-  },
-  {
-    "id": 4,
-    "firstName": "Alice",
-    "lastName": "Smith",
-    "email": "alice4@example.com",
-    "dob": "1990-01-01",
-    "imageUrl": "https://picsum.photos/200",
-    "acceptedTerms": true,
-    "bio": "Hello!"
-  },
-  {
-    "id": 5,
+    "id": 1,
     "firstName": "Robin",
     "lastName": "Winters",
     "email": "robinmelsaw@gmail.com",
     "dob": "1988-03-29",
-    "imageUrl": "https://picsum.photos/seed/1746533709815/200/200",
+    "imageUrl": "https://picsum.photos/seed/1746538043684/200/200",
     "acceptedTerms": true,
-    "bio": ""
+    "bio": "Hello, I am Robin Winters."
+  },
+  {
+    "id": 2,
+    "firstName": "Canan",
+    "lastName": "Ucar",
+    "email": "canan@test.com",
+    "dob": "1994-02-08",
+    "imageUrl": "https://picsum.photos/seed/1746538059855/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello. I am Canan Ucar..."
+  },
+  {
+    "id": 3,
+    "firstName": "Dara",
+    "lastName": "Ucar",
+    "email": "dara@test.com",
+    "dob": "2023-06-13",
+    "imageUrl": "https://picsum.photos/seed/1746538194493/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello, It is Dara"
+  },
+  {
+    "id": 4,
+    "firstName": "Yusuf",
+    "lastName": "Ucar",
+    "email": "yusuf@yusuf.com",
+    "dob": "1973-09-18",
+    "imageUrl": "https://picsum.photos/seed/1746538208548/200/200",
+    "acceptedTerms": true,
+    "bio": "Hi, I am Yusuf Ucar..."
+  },
+  {
+    "id": 5,
+    "firstName": "Figen",
+    "lastName": "Ucar",
+    "email": "figen@figen.com",
+    "dob": "1975-06-13",
+    "imageUrl": "https://picsum.photos/seed/1746538280425/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello, I am Figen Ucar..."
   },
   {
     "id": 6,
-    "firstName": "Robin",
-    "lastName": "Winters",
-    "email": "robinmelsaw1@gmail.com",
-    "dob": "1988-03-29",
-    "imageUrl": "https://picsum.photos/seed/1746533921451/200/200",
+    "firstName": "Yildiz",
+    "lastName": "Ucar",
+    "email": "yildiz@yildiz.com",
+    "dob": "1977-11-27",
+    "imageUrl": "https://picsum.photos/seed/1746538326896/200/200",
     "acceptedTerms": true,
-    "bio": ""
+    "bio": "Hello, I am Yildiz Ucar..."
+  },
+  {
+    "id": 7,
+    "firstName": "Keziban",
+    "lastName": "Ucar",
+    "email": "keziban@kezi.com",
+    "dob": "1979-03-19",
+    "imageUrl": "https://picsum.photos/seed/1746538384741/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello, I am Keziban Ucar..."
+  },
+  {
+    "id": 8,
+    "firstName": "Medine",
+    "lastName": "Ucar",
+    "email": "medine@medine.com",
+    "dob": "1981-05-05",
+    "imageUrl": "https://picsum.photos/seed/1746538436554/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello I am Medine Ucar"
+  },
+  {
+    "id": 9,
+    "firstName": "Bilal",
+    "lastName": "Ucar",
+    "email": "bilal@bilal.com",
+    "dob": "1948-05-13",
+    "imageUrl": "https://picsum.photos/seed/1746538482618/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello, I am Bilal Ucar..."
+  },
+  {
+    "id": 10,
+    "firstName": "Ayse",
+    "lastName": "Ucar",
+    "email": "ayse@ayse.com",
+    "dob": "1950-07-08",
+    "imageUrl": "https://picsum.photos/seed/1746538522750/200/200",
+    "acceptedTerms": true,
+    "bio": "Hello, I am Ayse Ucar."
   }
 ]

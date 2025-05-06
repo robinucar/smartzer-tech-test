@@ -5,9 +5,8 @@ import {
   FormEvent,
   useCallback,
 } from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { User } from '@shared-types';
-import { updateUser, createUser } from '../../lib/api/users';
+
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { ImagePreviewBlock } from './ImagePreviewBlock';
 import { UserFormFields } from './UserFormFields';
@@ -21,6 +20,7 @@ import {
   Spinner,
   FlexRow,
 } from './UserModal.style';
+import { useUser } from '../../Hooks/useUser';
 
 interface UserModalProps {
   user: User | null;
@@ -32,38 +32,13 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
   const [formData, setFormData] = useState<Partial<User>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isUpdated, setIsUpdated] = useState(false);
-  const queryClient = useQueryClient();
+
+  const { createUser, updateUser, isCreating, isUpdating, users } = useUser();
 
   const generateImageUrl = useCallback(
     () => `https://picsum.photos/seed/${Date.now()}/200/200`,
     []
   );
-  const mutation = useMutation({
-    mutationFn: (data: Partial<User>) =>
-      user?.id ? updateUser(String(user.id), data) : createUser(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      setIsUpdated(true);
-
-      setTimeout(() => {
-        if (!user?.id) {
-          setFormData({
-            acceptedTerms: false,
-            imageUrl: generateImageUrl(),
-          });
-        }
-        setIsUpdated(false);
-        onClose();
-      }, 1000);
-    },
-    onError: () => {
-      setErrors({
-        form: user?.id
-          ? 'Failed to update user. Please try again.'
-          : 'Failed to create user. Please try again.',
-      });
-    },
-  });
 
   useEffect(() => {
     if (isOpen) {
@@ -81,7 +56,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
       setErrors({});
       setIsUpdated(false);
     }
-  }, [generateImageUrl, isOpen, user]);
+  }, [isOpen, user, generateImageUrl]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -112,6 +87,13 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
       newErrors.email = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
+    } else if (
+      !user?.id &&
+      users.some(
+        (u: User) => u.email.toLowerCase() === formData.email?.toLowerCase()
+      )
+    ) {
+      newErrors.email = 'Email already exists';
     }
     if (!formData.dob) newErrors.dob = 'Date of birth is required';
     if (!formData.acceptedTerms)
@@ -132,7 +114,24 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
       imageUrl: formData.imageUrl || generateImageUrl(),
     };
 
-    mutation.mutate(payload);
+    if (user?.id) {
+      updateUser(String(user.id), payload);
+    } else {
+      createUser(payload);
+    }
+
+    setIsUpdated(true);
+
+    setTimeout(() => {
+      if (!user?.id) {
+        setFormData({
+          acceptedTerms: false,
+          imageUrl: generateImageUrl(),
+        });
+      }
+      setIsUpdated(false);
+      onClose();
+    }, 1000);
   };
 
   if (!isOpen) return null;
@@ -174,8 +173,8 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
             <Button type="button" onClick={onClose}>
               {isUpdated ? 'Close' : 'Cancel'}
             </Button>
-            <Button type="submit" disabled={mutation.isPending}>
-              {mutation.isPending ? <Spinner /> : 'Save'}
+            <Button type="submit" disabled={isCreating || isUpdating}>
+              {isCreating || isUpdating ? <Spinner /> : 'Save'}
             </Button>
           </ButtonGroup>
         </form>

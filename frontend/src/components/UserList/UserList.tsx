@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getUsers, deleteUser } from '../../lib/api/users';
 import { User } from '@shared-types';
 import { UserModal } from '../UserModal/UserModal';
 import { ConfirmDialog } from '../shared/ConfirmDialog/ConfirmDialog';
 import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
-import { Loading } from '../shared/Loading/Loading';
+import { useUser } from '../../Hooks/useUser';
 import {
   TableWrapper,
   Table,
@@ -17,32 +15,20 @@ import {
   Td,
   EyeButton,
 } from './UserList.styles';
+import { sortUsersByName, capitalize } from '../../Utils/UserUtils';
 
-export const UserList = () => {
-  const queryClient = useQueryClient();
+interface UserListProps {
+  users: User[];
+}
 
-  const { data, isLoading, isError } = useQuery<User[]>({
-    queryKey: ['users'],
-    queryFn: getUsers,
-  });
+export const UserList = ({ users }: UserListProps) => {
+  const { deleteUser: deleteUserById } = useUser();
 
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
-
-  const deleteMutation = useMutation({
-    mutationFn: (id: string) => deleteUser(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      setDeleteError(null);
-      setDeleteSuccess(true);
-    },
-    onError: () => {
-      setDeleteError('Failed to delete user');
-    },
-  });
 
   useEffect(() => {
     if (deleteSuccess) {
@@ -62,15 +48,18 @@ export const UserList = () => {
     setModalOpen(false);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (pendingDelete) {
-      deleteMutation.mutate(pendingDelete);
+      try {
+        await deleteUserById(pendingDelete);
+        setDeleteError(null);
+        setDeleteSuccess(true);
+      } catch {
+        setDeleteError('Failed to delete user');
+      }
       setPendingDelete(null);
     }
   };
-
-  if (isLoading) return <Loading />;
-  if (isError || !data) return <ErrorMessage message="Failed to load users." />;
 
   return (
     <>
@@ -88,13 +77,13 @@ export const UserList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {data.map((user) => (
+            {sortUsersByName(users).map((user) => (
               <Tr key={user.id}>
                 <Td>
                   <EyeButton onClick={() => handleOpenModal(user)}>👁</EyeButton>
                 </Td>
                 <Td>
-                  {user.firstName} {user.lastName}
+                  {capitalize(user.firstName)} {capitalize(user.lastName)}
                 </Td>
                 <Td>{user.dob}</Td>
                 <Td>
