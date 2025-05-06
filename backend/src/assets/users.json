@@ -98,5 +98,14 @@
     "imageUrl": "https://picsum.photos/seed/1746538522750/200/200",
     "acceptedTerms": true,
     "bio": "Hello, I am Ayse Ucar."
+  },
+  {
+    "id": 11,
+    "firstName": "Test",
+    "lastName": "User",
+    "email": "robinmelsaw1@gmail.com",
+    "dob": "1988-03-29",
+    "imageUrl": "https://picsum.photos/seed/1746574129682/200/200",
+    "acceptedTerms": true
   }
 ]
