@@ -172,7 +172,7 @@ You can find screenshots of Grid, List, and Form views in the root /docs folder.
   Add schema-based validation (e.g. with Zod or Yup) for better form handling and error feedback.
 
 - Filtering:
-  Add pagination for the list/grid views and support for searching/filtering users by name or DOB.
+  Add support for searching/filtering users by name or DOB.
 
 - Responsive Enhancements
   Further refine breakpoints and spacing to better support tablets and small screens.
