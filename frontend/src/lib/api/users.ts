@@ -20,3 +20,14 @@ export const updateUser = async (id: string, userData: Partial<User>) => {
   if (!res.ok) throw new Error(`Failed to update user with id ${id}`);
   return res.json();
 };
+
+export const deleteUser = async (id: string) => {
+  const res = await fetch(`${BASE_URL}/users/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!res.ok) throw new Error(`Failed to delete user with id ${id}`);
+
+  if (res.status === 204) return;
+  return res.json();
+};

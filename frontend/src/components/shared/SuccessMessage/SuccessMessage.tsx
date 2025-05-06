@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Wrapper, CloseButton } from './ErrorMessage.style';
+import { Wrapper, CloseButton } from './SuccessMessage.style';
 
 type Props = {
   message: string;
@@ -7,11 +7,14 @@ type Props = {
   onDismiss?: () => void;
 };
 
-export const ErrorMessage = ({ message, duration, onDismiss }: Props) => {
+export const SuccessMessage = ({
+  message,
+  duration = 3000,
+  onDismiss,
+}: Props) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (!duration) return;
     const timeout = setTimeout(() => {
       setVisible(false);
       onDismiss?.();
@@ -23,7 +26,7 @@ export const ErrorMessage = ({ message, duration, onDismiss }: Props) => {
   if (!visible) return null;
 
   return (
-    <Wrapper role="alert">
+    <Wrapper role="status">
       {message}
       <CloseButton
         aria-label="Close"
@@ -37,5 +40,3 @@ export const ErrorMessage = ({ message, duration, onDismiss }: Props) => {
     </Wrapper>
   );
 };
-
-export default ErrorMessage;

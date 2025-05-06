@@ -2,7 +2,7 @@ import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { User } from '@shared-types';
 import { updateUser } from '../../lib/api/users';
-
+import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import {
   Overlay,
   Modal,
@@ -17,7 +17,6 @@ import {
   DateInput,
   ErrorText,
   CloseIcon,
-  SuccessText,
 } from './UserModal.style';
 
 interface UserModalProps {
@@ -53,7 +52,6 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
     }
   }, [isOpen, user]);
 
-  // Reset success only once when modal opens
   useEffect(() => {
     if (isOpen) {
       setIsUpdated(false);
@@ -105,7 +103,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
         </CloseIcon>
         <h2 id="user-modal-title">{user.id ? 'Edit' : 'Create'} User</h2>
 
-        {isUpdated && <SuccessText>User updated successfully!</SuccessText>}
+        {isUpdated && <SuccessMessage message="User updated successfully!" />}
         {errors.form && <ErrorText role="alert">{errors.form}</ErrorText>}
 
         <form onSubmit={handleSubmit}>
