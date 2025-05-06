@@ -9,6 +9,7 @@ import {
   ErrorText,
   FlexRow,
   FormFieldsWrapper,
+  HelperText,
 } from './UserModal.style';
 import { User } from '@shared-types';
 
@@ -36,6 +37,9 @@ export const UserFormFields: FC<UserFormFieldsProps> = ({
         onChange={handleChange}
       />
       {errors.firstName && <ErrorText>{errors.firstName}</ErrorText>}
+      <HelperText>
+        Letters, spaces, hyphens (-), and apostrophes (') allowed
+      </HelperText>
     </Field>
 
     <Field>
@@ -46,6 +50,9 @@ export const UserFormFields: FC<UserFormFieldsProps> = ({
         onChange={handleChange}
       />
       {errors.lastName && <ErrorText>{errors.lastName}</ErrorText>}
+      <HelperText>
+        Letters, spaces, hyphens (-), and apostrophes (') allowed
+      </HelperText>
     </Field>
 
     <Field>

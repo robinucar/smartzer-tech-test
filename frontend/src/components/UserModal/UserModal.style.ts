@@ -182,3 +182,9 @@ export const FormFieldsWrapper = styled.div<
   flex-direction: column;
   gap: 1rem;
 `;
+export const HelperText = styled.small`
+  color: #6c757d;
+  font-size: 12px;
+  display: block;
+  margin-top: 4px;
+`;
