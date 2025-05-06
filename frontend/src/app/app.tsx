@@ -50,6 +50,7 @@ const App = () => {
           <Controls>
             <ViewToggleButton
               onClick={() => handleViewChange('list')}
+              selected={view === 'list'}
               aria-pressed={view === 'list'}
             >
               List view
@@ -57,6 +58,7 @@ const App = () => {
 
             <ViewToggleButton
               onClick={() => handleViewChange('grid')}
+              selected={view === 'grid'}
               aria-pressed={view === 'grid'}
             >
               Grid view
