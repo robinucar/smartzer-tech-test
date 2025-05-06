@@ -1,110 +1,231 @@
-# SmartzerTechTest
+# 🧩 Smartzer Tech Test – Full Stack Monorepo
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack user management system built for the Smartzer tech test using a modern **Nx monorepo** with a **flat folder structure**. It features:
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+- ✅ A REST API backend (Node.js + Express)
+- ✅ A React + Vite frontend (styled with styled-components)
+- ✅ Shared types across backend and frontend
+- ✅ End-to-end tests, component tests, and CI/CD
+- ✅ Dockerized development and deployment
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+---
 
-## Generate a library
+## 🗂️ Project Structure
 
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
+> This Nx workspace uses the **flat folder structure** (Nx 20+), where all apps and libraries are placed directly in the root.
+
+```bash
+.
+├── backend/               # REST API (Express)
+├── frontend/              # React + Vite frontend
+├── shared-types/          # Shared User type definitions
+├── backend-e2e/           # E2E tests for backend
+├── frontend-e2e/          # E2E tests for frontend
+├── .github/workflows/     # GitHub Actions CI workflows
+├── docker-compose.yml     # Docker orchestration for local dev
+├── README.md              # This file
 ```
 
-## Run tasks
+## ⚙️ Technologies Used
 
-To build the library use:
+### 🛠 Backend
 
-```sh
-npx nx build pkg1
+- Node.js + Express
+
+- TypeScript
+
+- REST API with .json data store
+
+- Jest (unit tests)
+
+- Docker
+
+## 🎨 Frontend
+
+- React + TypeScript
+
+- Vite (for fast builds and dev server)
+
+- TanStack Query for API communication
+
+- styled-components for styling
+
+- Jest (Unit test)
+
+- Docker
+
+## 📦 Setup & Running Locally
+
+1. Install dependencies:
+
+```
+npm install
+
 ```
 
-To run any task with Nx use:
-
-```sh
-npx nx <target> <project-name>
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
+2. Start the backend:
 
 ```
-npx nx release
+nx serve backend
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+3. Configure the frontend .env file
 
-[Learn more about Nx release &raquo;](hhttps://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```
+ VITE_API_URL=http://localhost:<port>
 
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
+4. Start the frontend
 
-```sh
-npx nx sync:check
+```
+nx serve frontend
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
+## 🐳 Docker Compose
 
-## Set up CI!
+To run both backend and frontend in containers:
 
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+```
+docker-compose up --build
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+Then access:
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Frontend: http://localhost:4200
 
-### Step 2
+- Backend: http://localhost:3333
 
-Use the following command to configure a CI workflow for your workspace:
+## 🚀 CI/CD – GitHub Actions
 
-```sh
-npx nx g ci-workflow
+This project uses GitHub Actions for continuous integration and Docker publishing.
+
+### ✅ Backend CI (.github/workflows/backend.yml)
+
+Runs on every push or PR to main involving backend files:
+
+- ✅ Lints backend code: npx nx lint backend
+
+- ✅ Runs backend tests: npx nx test backend
+
+- ✅ Builds the backend: npx nx build backend
+
+- ✅ On main branch, builds and pushes a Docker image:
+
+robinwinters/smartzer-backend:latest
+
+robinwinters/smartzer-backend:<version>
+
+📄 Uses version from backend/package.json
+
+### ✅ Frontend CI (.github/workflows/frontend.yml)
+
+Triggered on push or PR to main affecting frontend files:
+
+- ✅ Lints frontend code: npx nx lint frontend
+
+- ✅ Builds the frontend: npx nx build frontend
+
+- ✅ Runs frontend tests: npx nx test frontend
+
+- ✅ On main, builds and pushes Docker image:
+
+  - robinwinters/smartzer-frontend:latest
+
+  - robinwinters/smartzer-frontend:<version>
+
+📄 Uses version from frontend/package.json
+
+### 🔄 Docker Compose Auto-Publish (.github/workflows/publish-compose.yml)
+
+After a successful push to main:
+
+- ✅ Generates a docker-compose.yml referencing the latest pushed images
+- ✅ Commits and pushes it back to the repo automatically
+
+## 🐳 Docker Compose Setup
+
+1. 🌀 Download docker-compose.yml (optional if not cloned)
+
+To run the entire project (frontend + backend) using Docker Compose:
+
+```
+curl -O https://raw.githubusercontent.com/robinucar/smartzer-tech-test/main/docker-compose.yml
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+2. 🚀 Start the stack
 
-## Install Nx Console
+```
+docker-compose up --build
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+This will:
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- Spin up the backend at http://localhost:3333
 
-## Useful links
+- Spin up the frontend at http://localhost:4200
 
-Learn more:
+## 🛑 Stop and remove containers
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```
+docker-compose down
+```
 
-And join the Nx community:
+## 🔁 Rebuild containers after changes
 
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```
+ocker-compose up --build
+```
+
+## 🧪 User Stories
+
+- ✅ As a user, I can view users in both List and Grid format.
+
+- ✅ As a user, I can create, edit, and delete users using a clean, accessible form.
+
+- ✅ As a user, I can toggle between views, and my preference is remembered after a refresh.
+
+- ✅ As a user, I can preview full-size profile image and download a original-size profile image.
+
+- ✅ As a user, I can submit a form without a bio, since it is optional.
+
+- ✅ As a user, I can see my date of birth displayed in YYYY-MM-DD format.
+
+- ✅ As a user, I can add a middle name along with my first and last name.
+
+- ✅ As a user, I cannot add numbers or special characters inside name fields.
+
+- ✅ As a user, I cannot submit an invalid email address.
+
+- ✅ As a user, I cannot use an email address that already exists.
+
+- ✅ As a user, I see clear validation messages when I make mistakes.
+
+## 🔧 Potential Improvements
+
+- 🗃 Real Database Integration
+  Replace the local .json data store with a persistent database such as PostgreSQL or MongoDB using an ORM like Prisma or Mongoose.
+- 🚀 Cloud Deployment:
+  Deploy to platforms like Render, Railway, Fly.io, or AWS/GCP for hosting backend, frontend, and database in a production environment.
+- 🔐 User Authentication with AWS Cognito:
+  Add secure login, signup, and session management using Amazon Cognito, enabling OAuth2 and JWT support.
+- 🌗 Dark Mode / Theming:
+  Add support for light/dark themes and save user preference.
+
+## 🧠 Diagrams & Screenshots
+
+Located in the /docs/ directory:
+
+## 📘 Further Documentation
+
+For more in-depth details on each part of the system, check the individual README files:
+
+- backend/README.md – API endpoints, test setup, and architecture notes
+
+- frontend/README.md – Views, state management, form behavior, and Cypress testing
+
+- shared-types/README.md – Shared User model and type definitions
+
+- husky/ – Pre-commit hooks for linting, formatting, and security checks
+
+### 📝 Each app is self-documented to ensure modular understanding and easy onboarding.
