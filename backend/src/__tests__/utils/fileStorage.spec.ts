@@ -33,7 +33,7 @@ describe('fileStorage utility', () => {
     const users = await readUsers();
     expect(fs.readFile).toHaveBeenCalledWith(
       expect.stringContaining('users.json'),
-      'utf-8'
+      'utf-8',
     );
     expect(users).toEqual(mockUsers);
   });
@@ -45,7 +45,7 @@ describe('fileStorage utility', () => {
     });
     expect(fs.writeFile).toHaveBeenCalledWith(
       expect.stringContaining('users.json'),
-      JSON.stringify(mockUsers, null, 2)
+      JSON.stringify(mockUsers, null, 2),
     );
   });
 
@@ -64,7 +64,7 @@ describe('fileStorage utility', () => {
     expect(fs.readFile).toHaveBeenCalled();
     expect(fs.writeFile).toHaveBeenCalledWith(
       expect.stringContaining('users.json'),
-      JSON.stringify([], null, 2)
+      JSON.stringify([], null, 2),
     );
     expect(users).toEqual([]);
   });

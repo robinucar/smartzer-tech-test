@@ -48,7 +48,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     const users = await readUsers();
     const emailExists = users.some(
-      (u) => u.email.toLowerCase() === body.email.toLowerCase()
+      (u) => u.email.toLowerCase() === body.email.toLowerCase(),
     );
     if (emailExists) {
       return badRequest(res, 'Email already exists');
@@ -115,7 +115,7 @@ router.put('/:id', async (req: Request, res: Response) => {
     if (userIndex === -1) return notFound(res, 'User not found');
 
     const emailExists = users.some(
-      (u) => u.id !== id && u.email.toLowerCase() === body.email.toLowerCase()
+      (u) => u.id !== id && u.email.toLowerCase() === body.email.toLowerCase(),
     );
     if (emailExists) {
       return badRequest(res, 'Email already exists');

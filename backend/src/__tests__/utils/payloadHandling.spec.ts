@@ -20,19 +20,19 @@ describe('userUtils', () => {
 
     it('should return true for valid payload with bio', () => {
       expect(isValidUserPayload({ ...validPayload, bio: 'Bio text' })).toBe(
-        true
+        true,
       );
     });
 
     it('should return false for invalid email', () => {
       expect(isValidUserPayload({ ...validPayload, email: 'invalid' })).toBe(
-        false
+        false,
       );
     });
 
     it('should return false for invalid dob', () => {
       expect(isValidUserPayload({ ...validPayload, dob: '01-01-1990' })).toBe(
-        false
+        false,
       );
     });
 

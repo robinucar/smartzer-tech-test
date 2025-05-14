@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './lib/react-query-client';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 
 root.render(
@@ -13,5 +13,5 @@ root.render(
     <QueryClientProvider client={queryClient}>
       <App />
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

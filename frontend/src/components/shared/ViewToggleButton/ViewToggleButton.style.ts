@@ -13,7 +13,9 @@ export const ViewToggleButton = styled.button<ViewToggleButtonProps>`
   color: ${({ selected }) => (selected ? 'white' : 'black')};
   font-weight: bold;
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
 
   &:hover {
     background-color: ${({ selected }) => (selected ? 'black' : '#f0f0f0')};

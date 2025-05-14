@@ -57,7 +57,7 @@ export const UserGridView: FC<UserGridViewProps> = ({
               tabIndex={0}
               role="button"
               aria-label={`View profile image of ${capitalize(
-                user.firstName
+                user.firstName,
               )} ${capitalize(user.lastName)}`}
               onClick={() => onImageClick(user)}
               onKeyDown={(e) => {
@@ -67,11 +67,11 @@ export const UserGridView: FC<UserGridViewProps> = ({
               <ProfileImage
                 src={user.imageUrl}
                 alt={`Profile of ${capitalize(user.firstName)} ${capitalize(
-                  user.lastName
+                  user.lastName,
                 )}`}
               />
               <UserName>{`${capitalize(user.firstName)} ${capitalize(
-                user.lastName
+                user.lastName,
               )}`}</UserName>
             </UserCard>
           ))

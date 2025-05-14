@@ -17,7 +17,7 @@ interface UserFormFieldsProps {
   formData: Partial<User>;
   errors: Record<string, string>;
   handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
   children?: ReactNode;
 }

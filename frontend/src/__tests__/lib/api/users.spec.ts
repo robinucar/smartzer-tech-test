@@ -77,7 +77,7 @@ describe('createUser', () => {
       'http://localhost:3333/api/users',
       expect.objectContaining({
         method: 'POST',
-      })
+      }),
     );
   });
 
@@ -85,7 +85,7 @@ describe('createUser', () => {
     (fetch as jest.Mock).mockResolvedValueOnce({ ok: false });
 
     await expect(createUser({ firstName: 'Fail' })).rejects.toThrow(
-      'Failed to create user'
+      'Failed to create user',
     );
   });
 });
@@ -120,7 +120,7 @@ describe('updateUser', () => {
       'http://localhost:3333/api/users/1',
       expect.objectContaining({
         method: 'PUT',
-      })
+      }),
     );
   });
 
@@ -128,7 +128,7 @@ describe('updateUser', () => {
     (fetch as jest.Mock).mockResolvedValueOnce({ ok: false });
 
     await expect(updateUser('1', { firstName: 'Fail' })).rejects.toThrow(
-      'Failed to update user with id 1'
+      'Failed to update user with id 1',
     );
   });
 });
@@ -150,7 +150,7 @@ describe('deleteUser', () => {
       'http://localhost:3333/api/users/1',
       expect.objectContaining({
         method: 'DELETE',
-      })
+      }),
     );
   });
 
@@ -171,7 +171,7 @@ describe('deleteUser', () => {
     (fetch as jest.Mock).mockResolvedValueOnce({ ok: false });
 
     await expect(deleteUser('999')).rejects.toThrow(
-      'Failed to delete user with id 999'
+      'Failed to delete user with id 999',
     );
   });
 });

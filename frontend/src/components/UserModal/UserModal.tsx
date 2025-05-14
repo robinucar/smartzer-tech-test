@@ -37,7 +37,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
 
   const generateImageUrl = useCallback(
     () => `https://picsum.photos/seed/${Date.now()}/200/200`,
-    []
+    [],
   );
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
   }, [isOpen, user, generateImageUrl]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target;
     const checked =
@@ -90,7 +90,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
     } else if (
       !user?.id &&
       users.some(
-        (u: User) => u.email.toLowerCase() === formData.email?.toLowerCase()
+        (u: User) => u.email.toLowerCase() === formData.email?.toLowerCase(),
       )
     ) {
       newErrors.email = 'Email already exists';
