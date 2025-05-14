@@ -43,3 +43,8 @@ vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
 .env
+
+# Renovate logs and cache
+renovate.log
+.renovaterc.json
+.cache/

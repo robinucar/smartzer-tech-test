@@ -1,0 +1,18 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "rangeStrategy": "bump",
+  "dependencyDashboard": true,
+  "enabledManagers": ["npm", "dockerfile"],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["^@nx/"],
+      "groupName": "nx monorepo packages"
+    },
+    {
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "types packages"
+    }
+  ]
+}
