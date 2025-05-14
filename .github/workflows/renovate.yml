@@ -3,7 +3,11 @@ name: Renovate
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *' # Daily at 2 AM UTC
+    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
+
+permissions:
+  contents: read
+  issues: write # ✅ Allow Renovate to create Dependency Dashboard
 
 jobs:
   renovate:
