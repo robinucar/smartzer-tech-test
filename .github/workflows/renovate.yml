@@ -3,25 +3,15 @@ name: Renovate
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * *' # Runs every day at 2 AM UTC
+    - cron: '0 2 * * *' # Runs daily at 2 AM UTC
 
 jobs:
   renovate:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-
-      - name: Install Renovate CLI
-        run: npm install --no-save renovate
-
-      - name: Run Renovate
+      - name: Run Renovate via Docker
+        uses: docker://ghcr.io/renovatebot/renovate:latest
         env:
           RENOVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx renovate
+          LOG_LEVEL: debug
