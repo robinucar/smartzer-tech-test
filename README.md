@@ -143,6 +143,25 @@ After a successful push to main:
 - ✅ Generates a docker-compose.yml referencing the latest pushed images
 - ✅ Commits and pushes it back to the repo automatically
 
+### 🤖 Dependency Updates with Renovate
+
+This project uses Renovate to automate dependency updates across the entire monorepo.
+
+- ✅ Runs daily via GitHub Actions
+
+- ✅ Scans all package.json files in the flat Nx workspace
+
+- ✅ Opens PRs when outdated or vulnerable dependencies are found
+
+- ✅ Groups related updates (e.g. @nx/_, @types/_) into a single PR
+
+- ✅ Requires CI to pass before anything can be merged
+
+📁 Config: renovate.json
+⚙️ Workflow: renovate.yml
+
+Dependency Dashboard will appear under GitHub Issues when updates are available.
+
 ## 🐳 Docker Compose Setup
 
 1. 🌀 Download docker-compose.yml (optional if not cloned)
@@ -174,7 +193,7 @@ docker-compose down
 ## 🔁 Rebuild containers after changes
 
 ```
-ocker-compose up --build
+docker-compose up --build
 ```
 
 ## 🧪 User Stories
