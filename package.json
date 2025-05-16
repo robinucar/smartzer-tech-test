@@ -23,7 +23,7 @@
     "@nx/js": "20.8.1",
     "@nx/node": "20.8.1",
     "@nx/react": "^20.1.4",
-    "@nx/vite": "20.8.1",
+    "@nx/vite": "21.0.3",
     "@nx/web": "20.8.1",
     "@nx/webpack": "20.8.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
