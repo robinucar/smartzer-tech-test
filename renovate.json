@@ -11,6 +11,10 @@
   "prHourlyLimit": 2,
   "packageRules": [
     {
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "matchPackagePatterns": ["^@nx/"],
       "groupName": "Nx monorepo packages",
       "matchUpdateTypes": ["minor", "patch"]
