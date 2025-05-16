@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   issues: write
+  pull-requests: write
 
 jobs:
   renovate:
@@ -17,7 +18,7 @@ jobs:
       - name: Run Renovate via Docker
         uses: docker://ghcr.io/renovatebot/renovate:latest
         env:
-          RENOVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_PAT }}
           LOG_LEVEL: debug
         with:
           args: 'robinucar/smartzer-tech-test'
