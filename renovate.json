@@ -4,6 +4,7 @@
   "rangeStrategy": "bump",
   "dependencyDashboard": true,
   "enabledManagers": ["npm", "dockerfile"],
+  "baseBranches": ["main"],
   "labels": ["dependencies"],
   "packageRules": [
     {
