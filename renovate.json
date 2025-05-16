@@ -6,6 +6,8 @@
   "enabledManagers": ["npm", "dockerfile"],
   "baseBranches": ["main"],
   "labels": ["dependencies"],
+  "prCreation": "immediate",
+  "branchConcurrentLimit": 50,
   "packageRules": [
     {
       "matchPackagePatterns": ["^@nx/"],
@@ -13,7 +15,83 @@
     },
     {
       "matchPackagePatterns": ["^@types/"],
-      "groupName": "types packages"
+      "groupName": "TypeScript type definitions"
+    },
+    {
+      "matchPackageNames": [
+        "eslint",
+        "eslint-plugin-react",
+        "eslint-plugin-jsx-a11y",
+        "eslint-plugin-import",
+        "eslint-plugin-react-hooks",
+        "eslint-plugin-cypress",
+        "@eslint/js",
+        "eslint-config-prettier"
+      ],
+      "groupName": "ESLint and linting tools"
+    },
+    {
+      "matchPackageNames": [
+        "jest",
+        "ts-jest",
+        "jest-environment-jsdom",
+        "jest-environment-node",
+        "@swc/jest"
+      ],
+      "groupName": "Jest testing tools"
+    },
+    {
+      "matchPackageNames": ["vitest", "@vitest/ui"],
+      "groupName": "Vitest testing tools"
+    },
+    {
+      "matchPackageNames": ["supertest", "@types/supertest"],
+      "groupName": "Supertest tools"
+    },
+    {
+      "matchPackageNames": ["react", "react-dom", "react-is"],
+      "groupName": "React core packages"
+    },
+    {
+      "matchPackageNames": [
+        "styled-components",
+        "@types/styled-components",
+        "babel-plugin-styled-components"
+      ],
+      "groupName": "Styled Components"
+    },
+    {
+      "matchPackageNames": ["vite", "@nx/vite", "@vitejs/plugin-react"],
+      "groupName": "Vite and plugins"
+    },
+    {
+      "matchPackageNames": [
+        "webpack-cli",
+        "@nx/webpack",
+        "@pmmmwh/react-refresh-webpack-plugin",
+        "@svgr/webpack"
+      ],
+      "groupName": "Webpack and plugins"
+    },
+    {
+      "matchPackageNames": ["typescript", "ts-node", "tslib"],
+      "groupName": "TypeScript and tools"
+    },
+    {
+      "matchPackageNames": ["@tanstack/react-query"],
+      "groupName": "TanStack Query"
+    },
+    {
+      "matchPackageNames": ["express", "@types/express", "@nx/express"],
+      "groupName": "Express and related types"
+    },
+    {
+      "matchPackageNames": ["jsdom"],
+      "groupName": "jsdom"
+    },
+    {
+      "matchPackageNames": ["node"],
+      "groupName": "Node Docker base image"
     }
   ]
 }
