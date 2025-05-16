@@ -11,7 +11,8 @@
   "packageRules": [
     {
       "matchPackagePatterns": ["^@nx/"],
-      "groupName": "nx monorepo packages"
+      "groupName": "Nx monorepo packages",
+      "matchUpdateTypes": ["minor", "patch"]
     },
     {
       "matchPackagePatterns": ["^@types/"],
@@ -90,6 +91,7 @@
       "groupName": "jsdom"
     },
     {
+      "matchDatasources": ["docker"],
       "matchPackageNames": ["node"],
       "groupName": "Node Docker base image"
     }
