@@ -9,7 +9,6 @@
   "prCreation": "immediate",
   "branchConcurrentLimit": 50,
   "prHourlyLimit": 2,
-  "allowedDays": ["monday", "tuesday", "wednesday", "thursday", "friday"],
   "packageRules": [
     {
       "matchPackagePatterns": ["^@nx/"],
