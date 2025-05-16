@@ -8,6 +8,7 @@
   "labels": ["dependencies"],
   "prCreation": "immediate",
   "branchConcurrentLimit": 50,
+  "prDailyLimit": 10,
   "packageRules": [
     {
       "matchPackagePatterns": ["^@nx/"],
