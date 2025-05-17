@@ -9,6 +9,10 @@
   "prCreation": "immediate",
   "branchConcurrentLimit": 50,
   "prHourlyLimit": 2,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["after 10pm every weekday"]
+  },
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
