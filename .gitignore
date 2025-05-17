@@ -48,3 +48,6 @@ vitest.config.*.timestamp*
 renovate.log
 .renovaterc.json
 .cache/
+
+# Ignore generated Prisma client
+backend/src/generated/

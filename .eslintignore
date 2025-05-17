@@ -1,0 +1,12 @@
+# Ignore Prisma client
+backend/src/generated/
+
+# Ignore Cypress build output
+frontend-e2e/out-tsc/
+
+# Ignore shared types output
+shared-types/out-tsc/
+
+
+dist/
+node_modules/
