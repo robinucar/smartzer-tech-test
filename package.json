@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint . --ext .ts,.tsx --report-unused-disable-directives || exit 1",
+    "lint": "eslint . --ext .ts,.tsx --ignore-pattern backend/src/generated --ignore-pattern frontend-e2e/out-tsc --ignore-pattern shared-types/out-tsc --report-unused-disable-directives || exit 1",
     "format": "prettier --write .",
     "format:check": "prettier --check . || exit 1",
     "format:staged": "pretty-quick --staged",
@@ -62,9 +62,11 @@
     "jest-environment-node": "^29.7.0",
     "jiti": "2.4.2",
     "jsdom": "~26.1.0",
+    "lint-staged": "^16.0.0",
     "nx": "20.8.2",
     "prettier": "^3.5.3",
     "pretty-quick": "^4.1.1",
+    "prisma": "^6.8.2",
     "react-refresh": "^0.17.0",
     "renovate": "^40.13.0",
     "supertest": "^7.1.1",
@@ -85,6 +87,7 @@
     "shared-types"
   ],
   "dependencies": {
+    "@prisma/client": "^6.8.2",
     "@tanstack/react-query": "^5.76.1",
     "axios": "^1.9.0",
     "cors": "^2.8.5",
