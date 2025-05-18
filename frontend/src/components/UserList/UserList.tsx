@@ -4,7 +4,7 @@ import { UserModal } from '../UserModal/UserModal';
 import { ConfirmDialog } from '../shared/ConfirmDialog/ConfirmDialog';
 import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
-import { useUser } from '../../Hooks/useUser';
+import { useUser } from '../../hooks/useUser';
 import {
   TableWrapper,
   Table,

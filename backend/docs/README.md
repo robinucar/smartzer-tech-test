@@ -181,18 +181,17 @@ interface User {
 
 The GitHub Actions workflow does the following:
 
-- Installs dependencies with --legacy-peer-deps
+- Installs dependencies
 
 - Lints and runs unit tests
 
 - Builds the backend
 
-- Builds and pushes Docker image to Docker Hub with:
+- Builds and pushes Docker image:
 
 ```
-<username>/smartzer-backend:latest
+docker build --no-cache -f backend/Dockerfile -t robinwinters/smartzer-backend:latest .
 
-<username>/smartzer-backend:<version>
 ```
 
 🔐 Required GitHub Secrets

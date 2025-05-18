@@ -2,22 +2,18 @@
   FROM node:22.15.1-alpine AS base
   WORKDIR /app
   
-  # Copy monorepo root-level files
-  COPY package.json package-lock.json ./
-  COPY nx.json tsconfig.base.json ./
+  # Copy full monorepo early to support workspaces
+  COPY . .
   
-  # Install dependencies
-  RUN npm ci --legacy-peer-deps
+  # Install all dependencies
+  RUN npm ci
   
   
   # ---------- Build stage ----------
   FROM base AS build
   WORKDIR /app
   
-  # Copy the full monorepo
-  COPY . .
-  
-  # Build the frontend project (adjust if your target is named differently)
+  # Build the frontend project
   RUN npx nx build frontend
   
   
@@ -29,8 +25,7 @@
   RUN rm -rf ./*
   
   # Copy only the frontend's dist output
-  COPY --from=build /app/frontend/dist ./
-  
+  COPY --from=build /app/frontend/dist/ ./
   
   EXPOSE 80
   

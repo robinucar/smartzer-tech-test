@@ -87,7 +87,7 @@ nx serve frontend
 To run both backend and frontend in containers:
 
 ```
-docker-compose up --build
+docker compose up --build
 ```
 
 Then access:

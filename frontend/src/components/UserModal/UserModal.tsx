@@ -20,7 +20,7 @@ import {
   Spinner,
   FlexRow,
 } from './UserModal.style';
-import { useUser } from '../../Hooks/useUser';
+import { useUser } from '../../hooks/useUser';
 
 interface UserModalProps {
   user: User | null;
