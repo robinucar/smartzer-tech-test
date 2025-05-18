@@ -10,7 +10,7 @@ import { UserGridView } from '../components/UserGridView/UserGridView';
 import { UserImageModal } from '../components/UserImageModal/UserImageModal';
 import { Loading } from '../components/shared/Loading/Loading';
 import { ErrorMessage } from '../components/shared/ErrorMessage/ErrorMessage';
-import { useUser } from '../Hooks/useUser';
+import { useUser } from '../hooks/useUser';
 import { User } from '@shared-types';
 
 const GlobalStyle = createGlobalStyle`

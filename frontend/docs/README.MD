@@ -65,7 +65,7 @@ frontend/
 │   │   │   ├── react-query-client.ts
 │   │   │   ├── styled.d.ts
 │   │   │   └── theme.ts
-│   │   └── Utils/
+│   │   └── utils/
 │   │       └── UserUtils.ts
 ```
 
@@ -124,7 +124,7 @@ nx serve frontend
 To build and run the frontend using Docker from project root directory:
 
 ```
-docker build -t smartzer-frontend:0.1.0 -t smartzer-frontend:latest -f frontend/Dockerfile .
+docker build --no-cache -f frontend/Dockerfile -t robinwinters/smartzer-frontend:latest .
 docker run -p 4200:4200 smartzer-frontend:latest
 
 ```

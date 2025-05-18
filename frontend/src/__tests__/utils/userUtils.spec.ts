@@ -1,4 +1,4 @@
-import { capitalize, sortUsersByName } from '../../Utils/UserUtils';
+import { capitalize, sortUsersByName } from '../../utils/UserUtils';
 import { User } from '@shared-types';
 
 describe('capitalize', () => {

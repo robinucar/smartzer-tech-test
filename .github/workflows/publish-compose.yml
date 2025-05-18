@@ -15,26 +15,8 @@ jobs:
         with:
           token: ${{ secrets.GH_PAT }}
 
-      - name: Generate docker-compose.yml
-        run: |
-          cat <<EOF > docker-compose.yml
-          services:
-            backend:
-              image: robinwinters/smartzer-backend:latest
-              container_name: smartzer-backend
-              ports:
-                - "3333:3333"
-              restart: always
-
-            frontend:
-              image: robinwinters/smartzer-frontend:latest
-              container_name: smartzer-frontend
-              ports:
-                - "4200:80"
-              depends_on:
-                - backend
-              restart: always
-          EOF
+      - name: Copy docker-compose template
+        run: cp compose-template.yml docker-compose.yml
 
       - name: Commit and push docker-compose.yml
         run: |
