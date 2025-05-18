@@ -47,4 +47,5 @@ vitest.config.*.timestamp*
 # Renovate logs and cache
 renovate.log
 .renovaterc.json
-.cache/
+
+backend/src/generated/
