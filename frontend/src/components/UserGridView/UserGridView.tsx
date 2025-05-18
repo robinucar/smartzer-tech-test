@@ -8,7 +8,7 @@ import {
   PaginationWrapper,
   PaginationButton,
 } from './UserGridView.style';
-import { sortUsersByName, capitalize } from '../../utils/UserUtils';
+import { sortUsersByName, capitalize } from '../../utils/userUtils';
 
 interface UserGridViewProps {
   users: User[];
