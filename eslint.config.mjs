@@ -9,6 +9,8 @@ export default [
       '**/dist',
       '**/vite.config.*.timestamp*',
       '**/vitest.config.*.timestamp*',
+      'backend/src/generated/**',
+      '**/out-tsc/**',
     ],
   },
   {
