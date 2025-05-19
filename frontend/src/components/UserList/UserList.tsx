@@ -15,7 +15,7 @@ import {
   Td,
   EyeButton,
 } from './UserList.styles';
-import { sortUsersByName, capitalize } from '../../utils/UserUtils';
+import { sortUsersByName, capitalize } from '../../utils/userUtils';
 
 interface UserListProps {
   users: User[];
