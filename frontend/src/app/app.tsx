@@ -48,6 +48,9 @@ const App = () => {
       <main role="main">
         <AppWrapper>
           <Controls>
+            <div className="text-3xl font-bold text-green-500 p-4 bg-yellow-100 rounded-md">
+              ✅ Tailwind is working!
+            </div>
             <ViewToggleButton
               onClick={() => handleViewChange('list')}
               selected={view === 'list'}

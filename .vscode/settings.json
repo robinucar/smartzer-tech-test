@@ -5,5 +5,8 @@
   "eslint.enable": true,
   "eslint.validate": ["typescript", "typescriptreact"],
   "editor.codeActionsOnSave": {},
-  "editor.formatOnSave": false
+  "editor.formatOnSave": false,
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore"
 }
