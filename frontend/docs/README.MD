@@ -56,7 +56,7 @@ frontend/
 │   │   ├── SuccessMessage/
 │   │   ├── Loading/
 │   │   └── ViewToggleButton/
-│   ├── Hooks/
+│   ├── hooks/
 │   │   └── useUser.ts
 │   ├── lib/
 │   │   ├── api/
@@ -66,7 +66,7 @@ frontend/
 │   │   │   ├── styled.d.ts
 │   │   │   └── theme.ts
 │   │   └── utils/
-│   │       └── UserUtils.ts
+│   │       └── userUtils.ts
 ```
 
 ## 🔥 Features
