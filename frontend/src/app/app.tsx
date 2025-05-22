@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../lib/theme';
 import { AppWrapper, Controls } from './app.styles';
-import { ViewToggleButton } from '../components/shared/ViewToggleButton/ViewToggleButton.style';
+import { ViewToggleButton } from '../components/shared/ViewToggleButton/ViewToggleButton';
 import { UserModal } from '../components/UserModal/UserModal';
 import { UserList } from '../components/UserList/UserList';
 import { UserGridView } from '../components/UserGridView/UserGridView';
