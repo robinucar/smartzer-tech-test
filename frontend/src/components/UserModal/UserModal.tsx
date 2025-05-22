@@ -67,8 +67,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
 
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        type === 'checkbox' ? checked : name === 'bio' ? value : value.trim(),
+      [name]: type === 'checkbox' ? checked : name === 'bio' ? value : value,
     }));
   };
 

@@ -1,64 +1,85 @@
 # 🧠 Smartzer Backend
 
-A modular, Express-based Node.js backend application designed with testability, scalability, and CI/CD in mind. Built with TypeScript, managed by Nx, and fully Dockerized.
-
----
+## A modular, Express-based Node.js backend application designed with testability, scalability, and CI/CD in mind. Built with TypeScript, Prisma, and managed by Nx in a monorepo structure.
 
 ## 🚀 Features
 
 - RESTful API for managing user data
-- JSON-based storage (via `users.json`)
-- Fully typed with TypeScript
-- Input validation and error handling
-- Unit tested with Jest
+- Fully typed with TypeScript and Prisma
+- Validated inputs with middleware
+- Clean architecture and separation of concerns
+- Unit tested with Jest and Supertest
 - Docker-ready and CI-integrated
 - Health check endpoint
-- Nx workspace with future frontend integration
-- Clean architecture with separation of concerns
+- Nx workspace with integrated frontend
+- Easy .env management via sync script
 
 ## 📁 Backend Directory Structure
 
 ```text
 backend/
-├── dist/                            # Compiled output (from tsc)
-├── out-tsc/                         # Transpiled Jest files
-│   └── jest/
-├── src/                             # Source files
-│   ├── __tests__/                   # Unit tests
-│   │   ├── mocks/                   # Test mocks
-│   │   │   ├── fileStorageMock.ts
+├── docs/                           # Markdown documentation
+│   └── README.md
+
+├── prisma/                         # Prisma schema and migrations
+│   ├── migrations/
+│   └── schema.prisma
+
+├── src/
+│   ├── __tests__/                  # All test files
+│   │   ├── middlewares/
+│   │   │   └── requireValidUserPayload.spec.ts
+│   │   ├── mocks/
+│   │   │   ├── prismaMock.ts
 │   │   │   └── userMocks.ts
 │   │   ├── routes/
 │   │   │   └── users.routes.spec.ts
+│   │   ├── services/
+│   │   │   └── userServices.spec.ts
 │   │   ├── utils/
 │   │   │   ├── errorResponse.spec.ts
-│   │   │   ├── fileStorage.spec.ts
 │   │   │   ├── parseUserId.spec.ts
-│   │   │   └── payloadHandling.spec.ts
-│   │   └── app.spec.ts              # App-level tests
-│   ├── assets/
-│   │   ├── .gitkeep
-│   │   └── users.json               # Local file-based DB
-│   ├── docs/
-│   │   └── README.md                # Backend-specific documentation
+│   │   │   └── app.spec.ts
+│   │   └── validation/
+│   │       ├── regexPatterns.spec.ts
+│   │       └── userValidationUtils.spec.ts
+
+│   ├── middlewares/
+│   │   └── requireValidUserPayload.ts
+
 │   ├── routes/
-│   │   └── users.routes.ts          # All /api/users endpoints
+│   │   └── users.routes.ts
+
+│   ├── services/
+│   │   └── userServices.ts
+
 │   ├── utils/
+│   │   ├── app.ts
 │   │   ├── errorResponse.ts
-│   │   ├── fileStorage.ts
 │   │   ├── parseUserId.ts
-│   │   └── payloadHandling.ts
-│   ├── app.ts                       # Express app config
-│   └── main.ts                      # Entry point
+
+│   ├── validation/
+│   │   ├── regexPatterns.ts
+│   │   └── userValidationUtils.ts
+
+│   └── main.ts
+
+├── assets/
+│   └── .gitkeep
+
+├── dist/
+├── out-tsc/
+│   └── jest/
+
+├── Dockerfile
 ├── .dockerignore
-├── Dockerfile                      # Docker build instructions
 ├── eslint.config.mjs
 ├── jest.config.ts
 ├── package.json
 ├── tsconfig.app.json
 ├── tsconfig.json
 ├── tsconfig.spec.json
-└── webpack.config.js               # For bundling (optional)
+└── webpack.config.js
 ```
 
 ## 🧬 Tech Stack
@@ -68,6 +89,10 @@ backend/
 - Express
 
 - TypeScript
+
+- Prisma ORM
+
+- PostgreSQL (local/dev via Docker)
 
 - Jest
 
@@ -81,8 +106,24 @@ backend/
 
 ## Run Locally
 
+Start Backend with Synced Environment
+
 ```
-nx serve backend
+npm run dev:backend
+```
+
+This will:
+
+- Copy .env → backend/.env
+
+- Start the server via nx serve backend
+
+- Clean up backend/.env on exit
+
+### Run with Frontend
+
+```
+npm run dev
 ```
 
 ## Run Tests
@@ -163,5 +204,4 @@ docker build --no-cache -f backend/Dockerfile -t robinwinters/smartzer-backend:l
 
 - Frontend integration (React/Vite)
 - Deploy to cloud
-
-- Use real database (PostgreSQL, MongoDB)
+- Add Authentication & RBAC (Role-Based Access Control)

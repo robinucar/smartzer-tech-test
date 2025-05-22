@@ -8,6 +8,7 @@ export default defineConfig(() => ({
   server: {
     port: 4200,
     host: 'localhost',
+    open: true,
   },
   preview: {
     port: 4300,
