@@ -8,6 +8,7 @@ import { Loading } from '../components/shared/Loading/Loading';
 import { ErrorMessage } from '../components/shared/ErrorMessage/ErrorMessage';
 import { useUser } from '../hooks/useUser';
 import { User } from '@shared-types';
+import { UserSearchBar } from '../components/SearchBar/UserSearchBar';
 
 const App = () => {
   const [view, setView] = useState<'list' | 'grid'>(() => {
@@ -17,6 +18,7 @@ const App = () => {
 
   const [isModalOpen, setModalOpen] = useState(false);
   const [previewUser, setPreviewUser] = useState<User | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { users, isLoading, isError } = useUser();
 
@@ -24,6 +26,15 @@ const App = () => {
     setView(newView);
     localStorage.setItem('view', newView);
   };
+
+  const filteredUsers = users.filter((user) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      user.firstName.toLowerCase().includes(q) ||
+      user.lastName.toLowerCase().includes(q) ||
+      user.email.toLowerCase().includes(q)
+    );
+  });
 
   return (
     <main
@@ -58,6 +69,9 @@ const App = () => {
           </ViewToggleButton>
         </div>
 
+        {/* Search Bar */}
+        <UserSearchBar onSearch={setSearchQuery} />
+
         {/* Status feedback */}
         {isLoading && <Loading />}
         {isError && <ErrorMessage message="Failed to load users." />}
@@ -66,9 +80,9 @@ const App = () => {
         {!isLoading &&
           !isError &&
           (view === 'list' ? (
-            <UserList users={users} />
+            <UserList users={filteredUsers} />
           ) : (
-            <UserGridView users={users} onImageClick={setPreviewUser} />
+            <UserGridView users={filteredUsers} onImageClick={setPreviewUser} />
           ))}
 
         {/* Create/Edit Modal */}

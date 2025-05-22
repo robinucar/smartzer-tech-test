@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { User } from '@shared-types';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
 import { Pagination } from '../shared/Pagination/Pagination';
+import { usePaginatedQueryParam } from '../../hooks/usePaginatedQueryParam';
 
 interface UserGridViewProps {
   users: User[];
@@ -15,21 +16,15 @@ export const UserGridView: FC<UserGridViewProps> = ({
   onImageClick,
 }) => {
   const sortedUsers = sortUsersByName(users);
-
-  const [currentPage, setCurrentPage] = useState(() => {
-    const stored = localStorage.getItem('gridPage');
-    return stored ? parseInt(stored, 10) : 1;
-  });
-
+  const [currentPage, setCurrentPage] = usePaginatedQueryParam();
   const [visibleUsers, setVisibleUsers] = useState<User[]>([]);
+
   const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
 
   useEffect(() => {
-    if (sortedUsers.length === 0) return;
     const startIndex = (currentPage - 1) * USERS_PER_PAGE;
     const endIndex = startIndex + USERS_PER_PAGE;
     setVisibleUsers(sortedUsers.slice(startIndex, endIndex));
-    localStorage.setItem('gridPage', String(currentPage));
   }, [currentPage, sortedUsers]);
 
   useEffect(() => {
@@ -64,7 +59,7 @@ export const UserGridView: FC<UserGridViewProps> = ({
               >
                 <img
                   src={user.imageUrl}
-                  alt={`Profile of ${name}`}
+                  alt={name}
                   className="w-24 h-24 rounded-md object-cover mb-3 border border-gray-300"
                 />
                 <span className="text-sm font-medium text-gray-800">

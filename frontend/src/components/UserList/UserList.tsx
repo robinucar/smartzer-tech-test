@@ -7,6 +7,7 @@ import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { useUser } from '../../hooks/useUser';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
 import { Pagination } from '../shared/Pagination/Pagination';
+import { usePaginatedQueryParam } from '../../hooks/usePaginatedQueryParam';
 
 interface UserListProps {
   users: User[];
@@ -16,33 +17,28 @@ const USERS_PER_PAGE = 9;
 
 export const UserList = ({ users }: UserListProps) => {
   const { deleteUser: deleteUserById } = useUser();
-
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(() => {
-    const stored = localStorage.getItem('listPage');
-    return stored ? parseInt(stored, 10) : 1;
-  });
+  const [currentPage, setCurrentPage] = usePaginatedQueryParam();
   const [visibleUsers, setVisibleUsers] = useState<User[]>([]);
 
   const sortedUsers = sortUsersByName(users);
   const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
 
   useEffect(() => {
-    if (deleteSuccess) {
-      const timeout = setTimeout(() => setDeleteSuccess(false), 3000);
-      return () => clearTimeout(timeout);
-    }
+    if (!deleteSuccess) return;
+
+    const timeout = setTimeout(() => setDeleteSuccess(false), 3000);
+    return () => clearTimeout(timeout);
   }, [deleteSuccess]);
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * USERS_PER_PAGE;
     const endIndex = startIndex + USERS_PER_PAGE;
     setVisibleUsers(sortedUsers.slice(startIndex, endIndex));
-    localStorage.setItem('listPage', String(currentPage));
   }, [currentPage, sortedUsers]);
 
   useEffect(() => {
@@ -145,6 +141,7 @@ export const UserList = ({ users }: UserListProps) => {
           </tbody>
         </table>
       </div>
+
       {totalPages > 0 && (
         <Pagination
           currentPage={currentPage}
