@@ -1,8 +1,4 @@
 import { useState } from 'react';
-import { ThemeProvider } from 'styled-components';
-
-import { theme } from '../lib/theme';
-import { AppWrapper, Controls } from './app.styles';
 import { ViewToggleButton } from '../components/shared/ViewToggleButton/ViewToggleButton';
 import { UserModal } from '../components/UserModal/UserModal';
 import { UserList } from '../components/UserList/UserList';
@@ -30,61 +26,68 @@ const App = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <main role="main">
-        <AppWrapper>
-          <div className="text-red-500">
-            This is a Tailwind test div with red text.
-          </div>
-          <Controls>
-            <ViewToggleButton
-              onClick={() => handleViewChange('list')}
-              selected={view === 'list'}
-              aria-pressed={view === 'list'}
-            >
-              List view
-            </ViewToggleButton>
+    <main
+      role="main"
+      className="min-h-screen bg-white text-gray-900 p-4 sm:p-6 md:p-8"
+    >
+      <div className="w-full max-w-7xl mx-auto">
+        {/* View Toggle Controls */}
+        <div
+          className="flex flex-wrap justify-center gap-3 mb-6"
+          role="group"
+          aria-label="Toggle view controls"
+        >
+          <ViewToggleButton
+            onClick={() => handleViewChange('list')}
+            selected={view === 'list'}
+            aria-pressed={view === 'list'}
+          >
+            List view
+          </ViewToggleButton>
 
-            <ViewToggleButton
-              onClick={() => handleViewChange('grid')}
-              selected={view === 'grid'}
-              aria-pressed={view === 'grid'}
-            >
-              Grid view
-            </ViewToggleButton>
+          <ViewToggleButton
+            onClick={() => handleViewChange('grid')}
+            selected={view === 'grid'}
+            aria-pressed={view === 'grid'}
+          >
+            Grid view
+          </ViewToggleButton>
 
-            <ViewToggleButton onClick={() => setModalOpen(true)}>
-              Create user
-            </ViewToggleButton>
-          </Controls>
+          <ViewToggleButton onClick={() => setModalOpen(true)}>
+            Create user
+          </ViewToggleButton>
+        </div>
 
-          {isLoading && <Loading />}
-          {isError && <ErrorMessage message="Failed to load users." />}
+        {/* Status feedback */}
+        {isLoading && <Loading />}
+        {isError && <ErrorMessage message="Failed to load users." />}
 
-          {!isLoading &&
-            !isError &&
-            (view === 'list' ? (
-              <UserList users={users} />
-            ) : (
-              <UserGridView users={users} onImageClick={setPreviewUser} />
-            ))}
+        {/* User views */}
+        {!isLoading &&
+          !isError &&
+          (view === 'list' ? (
+            <UserList users={users} />
+          ) : (
+            <UserGridView users={users} onImageClick={setPreviewUser} />
+          ))}
 
-          <UserModal
-            isOpen={isModalOpen}
-            onClose={() => setModalOpen(false)}
-            user={null}
+        {/* Create/Edit Modal */}
+        <UserModal
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+          user={null}
+        />
+
+        {/* Image Preview Modal */}
+        {previewUser && (
+          <UserImageModal
+            imageUrl={previewUser.imageUrl}
+            userName={`${previewUser.firstName} ${previewUser.lastName}`}
+            onClose={() => setPreviewUser(null)}
           />
-
-          {previewUser && (
-            <UserImageModal
-              imageUrl={previewUser.imageUrl}
-              userName={`${previewUser.firstName} ${previewUser.lastName}`}
-              onClose={() => setPreviewUser(null)}
-            />
-          )}
-        </AppWrapper>
-      </main>
-    </ThemeProvider>
+        )}
+      </div>
+    </main>
   );
 };
 
