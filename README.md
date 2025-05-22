@@ -82,6 +82,13 @@ nx serve backend
 nx serve frontend
 ```
 
+5. Optional: To start both backend and frontend together locally:
+
+```
+npm install --save-dev concurrently
+npm run dev
+```
+
 ## 🐳 Docker Compose
 
 To run both backend and frontend in containers:
