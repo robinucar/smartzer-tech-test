@@ -6,10 +6,13 @@ import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { useUser } from '../../hooks/useUser';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
+import { Pagination } from '../shared/Pagination/Pagination';
 
 interface UserListProps {
   users: User[];
 }
+
+const USERS_PER_PAGE = 9;
 
 export const UserList = ({ users }: UserListProps) => {
   const { deleteUser: deleteUserById } = useUser();
@@ -19,14 +22,34 @@ export const UserList = ({ users }: UserListProps) => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const stored = localStorage.getItem('listPage');
+    return stored ? parseInt(stored, 10) : 1;
+  });
+  const [visibleUsers, setVisibleUsers] = useState<User[]>([]);
+
+  const sortedUsers = sortUsersByName(users);
+  const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
 
   useEffect(() => {
     if (deleteSuccess) {
       const timeout = setTimeout(() => setDeleteSuccess(false), 3000);
       return () => clearTimeout(timeout);
     }
-    return undefined;
   }, [deleteSuccess]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+    const endIndex = startIndex + USERS_PER_PAGE;
+    setVisibleUsers(sortedUsers.slice(startIndex, endIndex));
+    localStorage.setItem('listPage', String(currentPage));
+  }, [currentPage, sortedUsers]);
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
 
   const handleOpenModal = (user: User) => {
     setSelectedUser(user);
@@ -63,30 +86,18 @@ export const UserList = ({ users }: UserListProps) => {
         >
           <thead className="bg-gray-100">
             <tr>
-              <th
-                scope="col"
-                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
-              ></th>
-              <th
-                scope="col"
-                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
-              >
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700"></th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
                 Name
               </th>
-              <th
-                scope="col"
-                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
-              >
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
                 Date of Birth
               </th>
-              <th
-                scope="col"
-                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
-              ></th>
+              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {sortUsersByName(users).map((user) => {
+            {visibleUsers.map((user) => {
               const isViewing = selectedUser?.id === user.id && isModalOpen;
               return (
                 <tr key={user.id} className="odd:bg-white even:bg-gray-50">
@@ -102,7 +113,7 @@ export const UserList = ({ users }: UserListProps) => {
                             ? '/icons/view-off.svg'
                             : '/icons/view-outline.svg'
                         }
-                        alt="View user"
+                        alt=""
                         width={20}
                         height={20}
                       />
@@ -122,7 +133,7 @@ export const UserList = ({ users }: UserListProps) => {
                     >
                       <img
                         src="/icons/delete-outline.svg"
-                        alt="Delete user"
+                        alt=""
                         width={20}
                         height={20}
                       />
@@ -134,6 +145,13 @@ export const UserList = ({ users }: UserListProps) => {
           </tbody>
         </table>
       </div>
+      {totalPages > 0 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
 
       <UserModal
         user={selectedUser}

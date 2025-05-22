@@ -10,7 +10,7 @@ This is the frontend for the Smartzer technical test, built using React, TypeScr
 
 - TanStack Query for API communication
 
-- styled-components for styling
+- Tailwind Css for styling
 
 - jest for testing utils and api method
 
@@ -41,7 +41,7 @@ frontend/
 │   ├── main.tsx
 │   ├── app/
 │   │   ├── app.tsx
-│   │   └── app.styles.ts
+│   │
 │   ├── __tests__/
 │   │   ├── lib/api/users.spec.ts
 │   │   └── utils/userUtils.spec.ts
@@ -56,6 +56,7 @@ frontend/
 │   │   ├── SuccessMessage/
 │   │   ├── Loading/
 │   │   └── ViewToggleButton/
+│   │   └── Pagination/
 │   ├── hooks/
 │   │   └── useUser.ts
 │   ├── lib/
@@ -63,8 +64,7 @@ frontend/
 │   │   │   ├── users.ts
 │   │   │   ├── config.ts
 │   │   │   ├── react-query-client.ts
-│   │   │   ├── styled.d.ts
-│   │   │   └── theme.ts
+│   │   │
 │   │   └── utils/
 │   │       └── userUtils.ts
 ```
@@ -185,6 +185,3 @@ You can find screenshots of Grid, List, and Form views in the root /docs folder.
 
 - State Management Layer (Optional)
   Introduce Zustand or Redux Toolkit if the app grows beyond current state complexity.
-
-- Adopt Tailwind CSS or Ant Design for Utility-First Styling (optional)
-  Replace styled-components with Tailwind CSS or Ant Design to simplify styling, reduce custom CSS overhead, and improve maintainability in larger codebases.
