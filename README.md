@@ -220,6 +220,8 @@ docker-compose up --build
 
 - ✅ As a user, I see clear validation messages when I make mistakes.
 
+- ✅ As a user, I can filter the user list or grid by typing part of a first name, last name, or email address.
+
 ## 🔧 Potential Improvements
 
 - 🗃 Real Database Integration
