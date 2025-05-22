@@ -11,7 +11,10 @@ import { User } from '@shared-types';
  * capitalize("DOE");  // "Doe"
  */
 export const capitalize = (str: string): string =>
-  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  str
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 
 /**
  * Sorts an array of users alphabetically by their first name, then last name (case-insensitive).

@@ -10,7 +10,7 @@ This is the frontend for the Smartzer technical test, built using React, TypeScr
 
 - TanStack Query for API communication
 
-- styled-components for styling
+- Tailwind Css for styling
 
 - jest for testing utils and api method
 
@@ -41,7 +41,7 @@ frontend/
 │   ├── main.tsx
 │   ├── app/
 │   │   ├── app.tsx
-│   │   └── app.styles.ts
+│   │
 │   ├── __tests__/
 │   │   ├── lib/api/users.spec.ts
 │   │   └── utils/userUtils.spec.ts
@@ -49,13 +49,18 @@ frontend/
 │   │   ├── UserList/
 │   │   ├── UserGridView/
 │   │   ├── UserModal/
+│   │     ├── ImagePreviewBlock
+│   │     └── UserFormField
+│   │     └── UserModal
 │   │   └── UserImageModal/
+│   │   └── SearchBar/UserSearchBar
 │   ├── shared/
 │   │   ├── ConfirmDialog/
 │   │   ├── ErrorMessage/
 │   │   ├── SuccessMessage/
 │   │   ├── Loading/
 │   │   └── ViewToggleButton/
+│   │   └── Pagination/
 │   ├── hooks/
 │   │   └── useUser.ts
 │   ├── lib/
@@ -63,8 +68,7 @@ frontend/
 │   │   │   ├── users.ts
 │   │   │   ├── config.ts
 │   │   │   ├── react-query-client.ts
-│   │   │   ├── styled.d.ts
-│   │   │   └── theme.ts
+│   │   │
 │   │   └── utils/
 │   │       └── userUtils.ts
 ```
@@ -74,6 +78,8 @@ frontend/
 - 🌐 List View: Table of users showing full name and DOB
 
 - 🖼 Grid View: 3×3 layout showing user avatars with names
+
+- 🔍 Search Functionality: Filters users by first name, last name, or email (case-insensitive)
 
 - 🔄 Persistent View Mode: List/Grid state saved across refresh
 
@@ -171,9 +177,6 @@ You can find screenshots of Grid, List, and Form views in the root /docs folder.
 - Form Validation Enhancements:
   Add schema-based validation (e.g. with Zod or Yup) for better form handling and error feedback.
 
-- Filtering:
-  Add support for searching/filtering users by name or DOB.
-
 - Responsive Enhancements
   Further refine breakpoints and spacing to better support tablets and small screens.
 
@@ -185,6 +188,3 @@ You can find screenshots of Grid, List, and Form views in the root /docs folder.
 
 - State Management Layer (Optional)
   Introduce Zustand or Redux Toolkit if the app grows beyond current state complexity.
-
-- Adopt Tailwind CSS or Ant Design for Utility-First Styling (optional)
-  Replace styled-components with Tailwind CSS or Ant Design to simplify styling, reduce custom CSS overhead, and improve maintainability in larger codebases.
