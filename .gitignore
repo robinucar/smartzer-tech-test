@@ -49,3 +49,5 @@ renovate.log
 .renovaterc.json
 
 backend/src/generated/
+
+backend/src/assets/users.json
