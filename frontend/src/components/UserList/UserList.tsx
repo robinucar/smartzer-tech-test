@@ -5,16 +5,6 @@ import { ConfirmDialog } from '../shared/ConfirmDialog/ConfirmDialog';
 import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { useUser } from '../../hooks/useUser';
-import {
-  TableWrapper,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  EyeButton,
-} from './UserList.styles';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
 
 interface UserListProps {
@@ -66,25 +56,45 @@ export const UserList = ({ users }: UserListProps) => {
       {deleteError && <ErrorMessage message={deleteError} />}
       {deleteSuccess && <SuccessMessage message="User deleted successfully!" />}
 
-      <TableWrapper>
-        <Table aria-label="User list">
-          <Thead>
-            <Tr>
-              <Th></Th>
-              <Th>Name</Th>
-              <Th>Date of Birth</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
+      <div className="overflow-x-auto mt-4">
+        <table
+          className="min-w-full divide-y divide-gray-200 bg-white border border-gray-300 rounded-lg shadow-sm"
+          aria-label="User list"
+        >
+          <thead className="bg-gray-100">
+            <tr>
+              <th
+                scope="col"
+                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
+              ></th>
+              <th
+                scope="col"
+                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
+              >
+                Name
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
+              >
+                Date of Birth
+              </th>
+              <th
+                scope="col"
+                className="px-4 py-3 text-left text-sm font-medium text-gray-700"
+              ></th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
             {sortUsersByName(users).map((user) => {
               const isViewing = selectedUser?.id === user.id && isModalOpen;
               return (
-                <Tr key={user.id}>
-                  <Td>
-                    <EyeButton
+                <tr key={user.id} className="odd:bg-white even:bg-gray-50">
+                  <td className="px-4 py-2">
+                    <button
                       onClick={() => handleOpenModal(user)}
                       aria-label="View user"
+                      className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     >
                       <img
                         src={
@@ -96,23 +106,19 @@ export const UserList = ({ users }: UserListProps) => {
                         width={20}
                         height={20}
                       />
-                    </EyeButton>
-                  </Td>
-                  <Td>
+                    </button>
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-800">
                     {capitalize(user.firstName)} {capitalize(user.lastName)}
-                  </Td>
-                  <Td>{user.dob}</Td>
-                  <Td>
+                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">
+                    {user.dob}
+                  </td>
+                  <td className="px-4 py-2">
                     <button
                       onClick={() => setPendingDelete(String(user.id))}
                       aria-label="Delete user"
-                      style={{
-                        background: 'none',
-                        border: '1px solid',
-                        borderRadius: '30%',
-                        cursor: 'pointer',
-                        color: 'red',
-                      }}
+                      className="p-1 border border-red-600 rounded-full text-red-600 hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
                     >
                       <img
                         src="/icons/delete-outline.svg"
@@ -121,13 +127,13 @@ export const UserList = ({ users }: UserListProps) => {
                         height={20}
                       />
                     </button>
-                  </Td>
-                </Tr>
+                  </td>
+                </tr>
               );
             })}
-          </Tbody>
-        </Table>
-      </TableWrapper>
+          </tbody>
+        </table>
+      </div>
 
       <UserModal
         user={selectedUser}
