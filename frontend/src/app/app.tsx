@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider, createGlobalStyle } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 
 import { theme } from '../lib/theme';
 import { AppWrapper, Controls } from './app.styles';
@@ -12,19 +12,6 @@ import { Loading } from '../components/shared/Loading/Loading';
 import { ErrorMessage } from '../components/shared/ErrorMessage/ErrorMessage';
 import { useUser } from '../hooks/useUser';
 import { User } from '@shared-types';
-
-const GlobalStyle = createGlobalStyle`
-  html, body, #root {
-    height: 100%;
-  }
-
-  body {
-    margin: 0;
-    background-color: ${({ theme }) => theme.colors.background};
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-    color: ${({ theme }) => theme.colors.text};
-  }
-`;
 
 const App = () => {
   const [view, setView] = useState<'list' | 'grid'>(() => {
@@ -44,9 +31,11 @@ const App = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <GlobalStyle />
       <main role="main">
         <AppWrapper>
+          <div className="text-red-500">
+            This is a Tailwind test div with red text.
+          </div>
           <Controls>
             <ViewToggleButton
               onClick={() => handleViewChange('list')}

@@ -10,16 +10,6 @@ import { User } from '@shared-types';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { ImagePreviewBlock } from './ImagePreviewBlock';
 import { UserFormFields } from './UserFormFields';
-import {
-  Overlay,
-  Modal,
-  ButtonGroup,
-  Button,
-  ErrorText,
-  CloseIcon,
-  Spinner,
-  FlexRow,
-} from './UserModal.style';
 import { useUser } from '../../hooks/useUser';
 
 interface UserModalProps {
@@ -67,8 +57,7 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
 
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        type === 'checkbox' ? checked : name === 'bio' ? value : value.trim(),
+      [name]: type === 'checkbox' ? checked : name === 'bio' ? value : value,
     }));
   };
 
@@ -137,12 +126,24 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <Overlay aria-labelledby="user-modal-title" role="dialog" aria-modal="true">
-      <Modal>
-        <CloseIcon onClick={onClose} aria-label="Close modal">
+    <div
+      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+      aria-labelledby="user-modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className="relative w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
+        <button
+          onClick={onClose}
+          aria-label="Close modal"
+          className="absolute top-2 right-2 text-xl font-bold text-gray-500 hover:text-black focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black"
+        >
           ×
-        </CloseIcon>
-        <h2 id="user-modal-title">{user?.id ? 'Edit' : 'Add new'} user</h2>
+        </button>
+
+        <h2 id="user-modal-title" className="text-xl font-semibold mb-4">
+          {user?.id ? 'Edit' : 'Add new'} user
+        </h2>
 
         {isUpdated && (
           <SuccessMessage
@@ -153,10 +154,14 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
             }
           />
         )}
-        {errors.form && <ErrorText role="alert">{errors.form}</ErrorText>}
+        {errors.form && (
+          <p role="alert" className="text-red-600 font-medium mb-2">
+            {errors.form}
+          </p>
+        )}
 
         <form onSubmit={handleSubmit}>
-          <FlexRow>
+          <div className="mb-6">
             <UserFormFields
               formData={formData}
               errors={errors}
@@ -167,18 +172,30 @@ export const UserModal = ({ user, isOpen, onClose }: UserModalProps) => {
                 onNext={handleNextImage}
               />
             </UserFormFields>
-          </FlexRow>
+          </div>
 
-          <ButtonGroup>
-            <Button type="button" onClick={onClose}>
+          <div className="flex justify-end gap-4 mt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 rounded bg-gray-200 text-gray-800 hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
+            >
               {isUpdated ? 'Close' : 'Cancel'}
-            </Button>
-            <Button type="submit" disabled={isCreating || isUpdating}>
-              {isCreating || isUpdating ? <Spinner /> : 'Save'}
-            </Button>
-          </ButtonGroup>
+            </button>
+            <button
+              type="submit"
+              disabled={isCreating || isUpdating}
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
+            >
+              {isCreating || isUpdating ? (
+                <span className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full inline-block" />
+              ) : (
+                'Save'
+              )}
+            </button>
+          </div>
         </form>
-      </Modal>
-    </Overlay>
+      </div>
+    </div>
   );
 };
