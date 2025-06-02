@@ -64,7 +64,7 @@
     "jsdom": "~26.1.0",
     "nx": "20.8.2",
     "prettier": "^3.5.3",
-    "pretty-quick": "^4.1.1",
+    "pretty-quick": "^4.2.2",
     "react-refresh": "^0.17.0",
     "renovate": "^40.24.1",
     "supertest": "^7.1.1",
