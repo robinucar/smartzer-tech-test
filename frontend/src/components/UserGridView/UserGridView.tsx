@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useMemo } from 'react';
 import { User } from '@shared-types';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
 import { Pagination } from '../shared/Pagination/Pagination';
@@ -15,23 +15,17 @@ export const UserGridView: FC<UserGridViewProps> = ({
   users,
   onImageClick,
 }) => {
-  const sortedUsers = sortUsersByName(users);
+  const sortedUsers = useMemo(() => sortUsersByName(users), [users]);
   const [currentPage, setCurrentPage] = usePaginatedQueryParam();
-  const [visibleUsers, setVisibleUsers] = useState<User[]>([]);
 
   const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
 
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * USERS_PER_PAGE;
-    const endIndex = startIndex + USERS_PER_PAGE;
-    setVisibleUsers(sortedUsers.slice(startIndex, endIndex));
-  }, [currentPage, sortedUsers]);
-
-  useEffect(() => {
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(totalPages);
-    }
-  }, [sortedUsers, totalPages, currentPage]);
+  const safePage = Math.min(Math.max(1, currentPage), totalPages || 1);
+  const startIndex = (safePage - 1) * USERS_PER_PAGE;
+  const visibleUsers = sortedUsers.slice(
+    startIndex,
+    startIndex + USERS_PER_PAGE,
+  );
 
   return (
     <>
@@ -42,9 +36,7 @@ export const UserGridView: FC<UserGridViewProps> = ({
       >
         {visibleUsers.length > 0 ? (
           visibleUsers.map((user) => {
-            const name = `${capitalize(user.firstName)} ${capitalize(
-              user.lastName,
-            )}`;
+            const name = `${capitalize(user.firstName)} ${capitalize(user.lastName)}`;
             return (
               <div
                 key={user.id}
@@ -77,7 +69,7 @@ export const UserGridView: FC<UserGridViewProps> = ({
 
       {totalPages > 0 && (
         <Pagination
-          currentPage={currentPage}
+          currentPage={safePage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />

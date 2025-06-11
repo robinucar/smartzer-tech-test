@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { User } from '@shared-types';
 import { UserModal } from '../UserModal/UserModal';
 import { ConfirmDialog } from '../shared/ConfirmDialog/ConfirmDialog';
@@ -23,10 +23,18 @@ export const UserList = ({ users }: UserListProps) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = usePaginatedQueryParam();
-  const [visibleUsers, setVisibleUsers] = useState<User[]>([]);
 
-  const sortedUsers = sortUsersByName(users);
-  const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
+  const sortedUsers = useMemo(() => sortUsersByName(users), [users]);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(sortedUsers.length / USERS_PER_PAGE),
+  );
+  const safePage = Math.min(Math.max(1, currentPage), totalPages);
+  const startIndex = (safePage - 1) * USERS_PER_PAGE;
+  const visibleUsers = sortedUsers.slice(
+    startIndex,
+    startIndex + USERS_PER_PAGE,
+  );
 
   useEffect(() => {
     if (!deleteSuccess) return;
@@ -34,18 +42,6 @@ export const UserList = ({ users }: UserListProps) => {
     const timeout = setTimeout(() => setDeleteSuccess(false), 3000);
     return () => clearTimeout(timeout);
   }, [deleteSuccess]);
-
-  useEffect(() => {
-    const startIndex = (currentPage - 1) * USERS_PER_PAGE;
-    const endIndex = startIndex + USERS_PER_PAGE;
-    setVisibleUsers(sortedUsers.slice(startIndex, endIndex));
-  }, [currentPage, sortedUsers]);
-
-  useEffect(() => {
-    if (currentPage > totalPages && totalPages > 0) {
-      setCurrentPage(totalPages);
-    }
-  }, [totalPages, currentPage]);
 
   const handleOpenModal = (user: User) => {
     setSelectedUser(user);
@@ -144,7 +140,7 @@ export const UserList = ({ users }: UserListProps) => {
 
       {totalPages > 0 && (
         <Pagination
-          currentPage={currentPage}
+          currentPage={safePage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
