@@ -112,6 +112,9 @@ frontend/
 
 - Create a .env file in the frontend/ directory:
   - And set up VITE_API_URL is the base URL for your backend API.
+  ```
+   VITE_API_URL=http://localhost:3333/api
+  ```
 
 ### Start Frontend Dev Server
 
