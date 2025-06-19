@@ -56,37 +56,88 @@ A full-stack user management system built for the Smartzer tech test using a mod
 
 ## 📦 Setup & Running Locally
 
-1. Clone the repository from the link.
+
+1. Clone the repository
+
 
 ```
 git clone https://github.com/robinucar/smartzer-tech-test.git
 cd smartzer-tech-test
 ```
 
-2. Install dependencies:
+
+2. Make sure to be implement-postgreSQL-db branch. If it is on main branch checkout to the implement-postgreSQL-db branch.
+
+```
+git branch     // if not implement-postgreSQL-db branch run below command
+git checkout implement-postgreSQL-db
+```
+
+3. Start PostgreSQL database via Docker
+
+```
+docker run --name smartzer-db \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=smartzer-tech-test \
+  -p 5434:5432 \
+  -d postgres:14
+```
+
+This will Start a local database named smartzer-tech-test
+
+- Start a local database named smartzer-tech-test
+- Use postgres as both the username and password
+- Expose the DB on port 5434
+
+4. Configure .env file
+
+```
+DATABASE_URL=postgresql://postgres:password@localhost:5434/smartzer-tech-test
+```
+
+5. Install dependencies
+
 
 ```
 npm install
-
 ```
 
-3. Start the backend:
+6. Push Prisma schema to create tables
+
+```
+npx prisma db push
+```
+
+
+7. Start the backend
+
 
 ```
 nx serve backend
 ```
 
-4. Configure the frontend .env file
+
+### Backend will be available at:
 
 ```
- VITE_API_URL=http://localhost:3333/api
-
+http://localhost:3333/api/users
 ```
 
-5. Start the frontend
+8. Optional: To start both backend and frontend together locally:
+n
 
 ```
-nx serve frontend
+npm install --save-dev concurrently
+npm run dev
+```
+
+
+- Make sure frontend has .env file and set:
+
+
+```
+VITE_API_URL=http://localhost:3333/api
 ```
 
 ## 🐳 Docker Compose

@@ -10,6 +10,8 @@ export default [
       '**/vite.config.*.timestamp*',
       '**/vitest.config.*.timestamp*',
       'backend/src/generated/**',
+      'backend/src/generated/**',
+      '**/out-tsc/**',
     ],
   },
   {

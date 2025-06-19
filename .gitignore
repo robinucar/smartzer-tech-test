@@ -49,3 +49,6 @@ renovate.log
 .renovaterc.json
 
 backend/src/generated/
+
+.env
+.env.local

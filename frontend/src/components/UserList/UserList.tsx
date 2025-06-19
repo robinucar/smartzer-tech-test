@@ -16,7 +16,7 @@ import {
   EyeButton,
 } from './UserList.styles';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
-
+import { formatDate } from '../../utils/dateUtils';
 interface UserListProps {
   users: User[];
 }
@@ -101,7 +101,7 @@ export const UserList = ({ users }: UserListProps) => {
                   <Td>
                     {capitalize(user.firstName)} {capitalize(user.lastName)}
                   </Td>
-                  <Td>{user.dob}</Td>
+                  <Td>{formatDate(user.dob)}</Td>
                   <Td>
                     <button
                       onClick={() => setPendingDelete(String(user.id))}
