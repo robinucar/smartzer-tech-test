@@ -56,27 +56,34 @@ A full-stack user management system built for the Smartzer tech test using a mod
 
 ## 📦 Setup & Running Locally
 
-1. Install dependencies:
+1. Clone the repository from the link.
+
+```
+git clone https://github.com/robinucar/smartzer-tech-test.git
+cd smartzer-tech-test
+```
+
+2. Install dependencies:
 
 ```
 npm install
 
 ```
 
-2. Start the backend:
+3. Start the backend:
 
 ```
 nx serve backend
 ```
 
-3. Configure the frontend .env file
+4. Configure the frontend .env file
 
 ```
- VITE_API_URL=http://localhost:<port>
+ VITE_API_URL=http://localhost:3333/api
 
 ```
 
-4. Start the frontend
+5. Start the frontend
 
 ```
 nx serve frontend
