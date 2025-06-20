@@ -1,9 +1,5 @@
 export const Loading = () => (
-  <p
-    role="status"
-    className="text-center py-4 text-gray-700 text-sm"
-    aria-live="polite"
-  >
+  <p role="status" style={{ textAlign: 'center', padding: '1rem' }}>
     Loading...
   </p>
 );

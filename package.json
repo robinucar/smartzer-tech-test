@@ -2,10 +2,6 @@
   "name": "@smartzer-tech-test/source",
   "version": "0.0.0",
   "license": "MIT",
-  "engines": {
-    "node": ">=22.13.0",
-    "npm": ">=10.7.0"
-  },
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint . --ext .ts,.tsx --ignore-pattern backend/src/generated --ignore-pattern frontend-e2e/out-tsc --ignore-pattern shared-types/out-tsc --report-unused-disable-directives || exit 1",
@@ -38,6 +34,7 @@
     "@nx/vite": "20.8.2",
     "@nx/web": "20.8.2",
     "@nx/webpack": "21.2.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.0",
     "@svgr/webpack": "^8.1.0",
     "@swc-node/register": "~1.10.10",
     "@swc/cli": "~0.7.7",
@@ -100,8 +97,8 @@
     "shared-types"
   ],
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.9",
-    "@tanstack/react-query": "^5.76.2",
+    "@prisma/client": "^6.8.2",
+    "@tanstack/react-query": "^5.80.10",
     "axios": "^1.9.0",
     "chokidar": "^4.0.3",
     "cors": "^2.8.5",
@@ -110,8 +107,5 @@
     "react-dom": "19.1.0",
     "react-is": "19.1.0",
     "styled-components": "^6.1.19"
-  },
-  "overrides": {
-    "type-fest": "^4.0.0"
   }
 }

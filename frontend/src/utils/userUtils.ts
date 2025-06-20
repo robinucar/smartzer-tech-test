@@ -14,6 +14,7 @@ import { User } from '@shared-types';
 export const capitalize = (str: string): string =>
   str
     .split(' ')
+    .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(' ');
 

@@ -1,4 +1,16 @@
 import { FC, ChangeEvent, ReactNode } from 'react';
+import {
+  Field,
+  Label,
+  Input,
+  TextArea,
+  DateInput,
+  CheckboxContainer,
+  ErrorText,
+  FlexRow,
+  FormFieldsWrapper,
+  HelperText,
+} from './UserModal.style';
 import { User } from '@shared-types';
 
 interface UserFormFieldsProps {
@@ -16,134 +28,79 @@ export const UserFormFields: FC<UserFormFieldsProps> = ({
   handleChange,
   children,
 }) => (
-  <div className="space-y-6">
-    {/* First Name */}
-    <div>
-      <label
-        htmlFor="firstName"
-        className="block text-sm font-medium text-gray-700"
-      >
-        First Name
-      </label>
-      <input
-        id="firstName"
+  <FormFieldsWrapper>
+    <Field>
+      <Label htmlFor="firstName">First Name</Label>
+      <Input
         name="firstName"
         value={formData.firstName || ''}
         onChange={handleChange}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-2"
       />
-      {errors.firstName && (
-        <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>
-      )}
-      <p className="mt-1 text-xs text-gray-500">
+      {errors.firstName && <ErrorText>{errors.firstName}</ErrorText>}
+      <HelperText>
         Letters, spaces, hyphens (-), and apostrophes (') allowed
-      </p>
-    </div>
+      </HelperText>
+    </Field>
 
-    {/* Last Name */}
-    <div>
-      <label
-        htmlFor="lastName"
-        className="block text-sm font-medium text-gray-700"
-      >
-        Last Name
-      </label>
-      <input
-        id="lastName"
+    <Field>
+      <Label htmlFor="lastName">Last Name</Label>
+      <Input
         name="lastName"
         value={formData.lastName || ''}
         onChange={handleChange}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-2"
       />
-      {errors.lastName && (
-        <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>
-      )}
-      <p className="mt-1 text-xs text-gray-500">
+      {errors.lastName && <ErrorText>{errors.lastName}</ErrorText>}
+      <HelperText>
         Letters, spaces, hyphens (-), and apostrophes (') allowed
-      </p>
-    </div>
+      </HelperText>
+    </Field>
 
-    {/* Email */}
-    <div>
-      <label
-        htmlFor="email"
-        className="block text-sm font-medium text-gray-700"
-      >
-        Email
-      </label>
-      <input
-        id="email"
+    <Field>
+      <Label htmlFor="email">Email</Label>
+      <Input
         name="email"
         value={formData.email || ''}
         onChange={handleChange}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-2"
       />
-      {errors.email && (
-        <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-      )}
-    </div>
+      {errors.email && <ErrorText>{errors.email}</ErrorText>}
+    </Field>
 
-    {/* Bio & Children Slot */}
-    <div className="flex flex-col lg:flex-row gap-4">
-      <div className="flex-1">
-        <label
-          htmlFor="bio"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Bio
-        </label>
-        <textarea
-          id="bio"
+    <FlexRow>
+      <Field style={{ flex: 1 }}>
+        <Label htmlFor="bio">Bio</Label>
+        <TextArea
           name="bio"
           value={formData.bio || ''}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-2"
-          rows={4}
         />
-      </div>
+      </Field>
       {children}
-    </div>
+    </FlexRow>
 
-    {/* DOB & Terms */}
-    <div className="flex flex-col lg:flex-row gap-4 items-start">
-      <div className="flex-1">
-        <label
-          htmlFor="dob"
-          className="block text-sm font-medium text-gray-700"
-        >
-          DOB
-        </label>
-        <input
-          id="dob"
+    <FlexRow>
+      <div>
+        <Label htmlFor="dob">DOB</Label>
+        <DateInput
           name="dob"
           type="date"
           value={formData.dob || ''}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-2"
         />
-        {errors.dob && (
-          <p className="mt-1 text-sm text-red-600">{errors.dob}</p>
-        )}
+        {errors.dob && <ErrorText>{errors.dob}</ErrorText>}
       </div>
 
-      <label
-        htmlFor="acceptedTerms"
-        className="flex items-center space-x-2 text-sm font-medium text-gray-700 cursor-pointer mt-6"
-      >
+      <CheckboxContainer htmlFor="acceptedTerms">
+        Accept T&Cs
         <input
           id="acceptedTerms"
           type="checkbox"
           name="acceptedTerms"
           checked={formData.acceptedTerms || false}
           onChange={handleChange}
-          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
         />
-        <span>Accept T&amp;Cs</span>
-      </label>
-    </div>
+      </CheckboxContainer>
+    </FlexRow>
 
-    {errors.acceptedTerms && (
-      <p className="text-sm text-red-600">{errors.acceptedTerms}</p>
-    )}
-  </div>
+    {errors.acceptedTerms && <ErrorText>{errors.acceptedTerms}</ErrorText>}
+  </FormFieldsWrapper>
 );

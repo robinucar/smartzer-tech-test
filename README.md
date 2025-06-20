@@ -56,12 +56,15 @@ A full-stack user management system built for the Smartzer tech test using a mod
 
 ## 📦 Setup & Running Locally
 
+
 1. Clone the repository
+
 
 ```
 git clone https://github.com/robinucar/smartzer-tech-test.git
 cd smartzer-tech-test
 ```
+
 
 2. Make sure to be implement-postgreSQL-db branch. If it is on main branch checkout to the implement-postgreSQL-db branch.
 
@@ -95,6 +98,7 @@ DATABASE_URL=postgresql://postgres:password@localhost:5434/smartzer-tech-test
 
 5. Install dependencies
 
+
 ```
 npm install
 ```
@@ -105,11 +109,14 @@ npm install
 npx prisma db push
 ```
 
+
 7. Start the backend
+
 
 ```
 nx serve backend
 ```
+
 
 ### Backend will be available at:
 
@@ -118,14 +125,16 @@ http://localhost:3333/api/users
 ```
 
 8. Optional: To start both backend and frontend together locally:
-   n
+n
 
 ```
 npm install --save-dev concurrently
 npm run dev
 ```
 
+
 - Make sure frontend has .env file and set:
+
 
 ```
 VITE_API_URL=http://localhost:3333/api
@@ -268,8 +277,6 @@ docker-compose up --build
 - ✅ As a user, I cannot use an email address that already exists.
 
 - ✅ As a user, I see clear validation messages when I make mistakes.
-
-- ✅ As a user, I can filter the user list or grid by typing part of a first name, last name, or email address.
 
 ## 🔧 Potential Improvements
 

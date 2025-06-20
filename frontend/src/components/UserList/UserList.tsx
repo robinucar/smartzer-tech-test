@@ -1,46 +1,41 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { User } from '@shared-types';
 import { UserModal } from '../UserModal/UserModal';
 import { ConfirmDialog } from '../shared/ConfirmDialog/ConfirmDialog';
 import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { useUser } from '../../hooks/useUser';
+import {
+  TableWrapper,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  EyeButton,
+} from './UserList.styles';
 import { sortUsersByName, capitalize } from '../../utils/userUtils';
-import { Pagination } from '../shared/Pagination/Pagination';
-import { usePaginatedQueryParam } from '../../hooks/usePaginatedQueryParam';
-
+import { formatDate } from '../../utils/dateUtils';
 interface UserListProps {
   users: User[];
 }
 
-const USERS_PER_PAGE = 9;
-
 export const UserList = ({ users }: UserListProps) => {
   const { deleteUser: deleteUserById } = useUser();
+
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [deleteSuccess, setDeleteSuccess] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = usePaginatedQueryParam();
-
-  const sortedUsers = useMemo(() => sortUsersByName(users), [users]);
-  const totalPages = Math.max(
-    1,
-    Math.ceil(sortedUsers.length / USERS_PER_PAGE),
-  );
-  const safePage = Math.min(Math.max(1, currentPage), totalPages);
-  const startIndex = (safePage - 1) * USERS_PER_PAGE;
-  const visibleUsers = sortedUsers.slice(
-    startIndex,
-    startIndex + USERS_PER_PAGE,
-  );
 
   useEffect(() => {
-    if (!deleteSuccess) return;
-
-    const timeout = setTimeout(() => setDeleteSuccess(false), 3000);
-    return () => clearTimeout(timeout);
+    if (deleteSuccess) {
+      const timeout = setTimeout(() => setDeleteSuccess(false), 3000);
+      return () => clearTimeout(timeout);
+    }
+    return undefined;
   }, [deleteSuccess]);
 
   const handleOpenModal = (user: User) => {
@@ -71,33 +66,25 @@ export const UserList = ({ users }: UserListProps) => {
       {deleteError && <ErrorMessage message={deleteError} />}
       {deleteSuccess && <SuccessMessage message="User deleted successfully!" />}
 
-      <div className="overflow-x-auto mt-4">
-        <table
-          className="min-w-full divide-y divide-gray-200 bg-white border border-gray-300 rounded-lg shadow-sm"
-          aria-label="User list"
-        >
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700"></th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700">
-                Date of Birth
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-700"></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {visibleUsers.map((user) => {
+      <TableWrapper>
+        <Table aria-label="User list">
+          <Thead>
+            <Tr>
+              <Th></Th>
+              <Th>Name</Th>
+              <Th>Date of Birth</Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {sortUsersByName(users).map((user) => {
               const isViewing = selectedUser?.id === user.id && isModalOpen;
               return (
-                <tr key={user.id} className="odd:bg-white even:bg-gray-50">
-                  <td className="px-4 py-2">
-                    <button
+                <Tr key={user.id}>
+                  <Td>
+                    <EyeButton
                       onClick={() => handleOpenModal(user)}
                       aria-label="View user"
-                      className="focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     >
                       <img
                         src={
@@ -105,46 +92,42 @@ export const UserList = ({ users }: UserListProps) => {
                             ? '/icons/view-off.svg'
                             : '/icons/view-outline.svg'
                         }
-                        alt=""
+                        alt="View user"
                         width={20}
                         height={20}
                       />
-                    </button>
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-800">
+                    </EyeButton>
+                  </Td>
+                  <Td>
                     {capitalize(user.firstName)} {capitalize(user.lastName)}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {user.dob}
-                  </td>
-                  <td className="px-4 py-2">
+                  </Td>
+                  <Td>{formatDate(user.dob)}</Td>
+                  <Td>
                     <button
                       onClick={() => setPendingDelete(String(user.id))}
                       aria-label="Delete user"
-                      className="p-1 border border-red-600 rounded-full text-red-600 hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+                      style={{
+                        background: 'none',
+                        border: '1px solid',
+                        borderRadius: '30%',
+                        cursor: 'pointer',
+                        color: 'red',
+                      }}
                     >
                       <img
                         src="/icons/delete-outline.svg"
-                        alt=""
+                        alt="Delete user"
                         width={20}
                         height={20}
                       />
                     </button>
-                  </td>
-                </tr>
+                  </Td>
+                </Tr>
               );
             })}
-          </tbody>
-        </table>
-      </div>
-
-      {totalPages > 0 && (
-        <Pagination
-          currentPage={safePage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      )}
+          </Tbody>
+        </Table>
+      </TableWrapper>
 
       <UserModal
         user={selectedUser}
