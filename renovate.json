@@ -9,6 +9,7 @@
   "prCreation": "immediate",
   "branchConcurrentLimit": 50,
   "prHourlyLimit": 2,
+  "rebaseWhen": "behind-base-branch",
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["after 10pm every weekday"]

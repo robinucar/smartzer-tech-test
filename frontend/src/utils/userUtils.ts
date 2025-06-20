@@ -1,14 +1,15 @@
 import { User } from '@shared-types';
 
 /**
- * Capitalizes the first letter of a string and lowercases the rest.
+ * Capitalizes the first letter of each word in the string.
  *
- * @param str - The string to capitalize.
- * @returns The capitalized string.
+ * @param str - The name string (can include middle names).
+ * @returns The capitalised string.
  *
  * @example
- * capitalize("john"); // "John"
- * capitalize("DOE");  // "Doe"
+ * capitalize("john");             // "John"
+ * capitalize("DOE");              // "Doe"
+ * capitalize("mary anne smith");  // "Mary Anne Smith"
  */
 export const capitalize = (str: string): string =>
   str
@@ -17,14 +18,13 @@ export const capitalize = (str: string): string =>
     .join(' ');
 
 /**
- * Sorts an array of users alphabetically by their first name, then last name (case-insensitive).
+ * Sorts an array of users alphabetically by full name.
  *
- * @param users - The array of users to sort.
- * @returns A new array of users sorted by name.
+ * The sort is case-insensitive and uses the combination of
+ * `firstName` and `lastName` for each user.
  *
- * @example
- * sortUsersByName([{ firstName: "bob", lastName: "Smith" }, { firstName: "alice", lastName: "Brown" }]);
- * // [{ firstName: "alice", lastName: "Brown" }, { firstName: "bob", lastName: "Smith" }]
+ * @param users - The array of User objects to sort.
+ * @returns A new array of User objects sorted by full name (firstName + lastName).
  */
 export const sortUsersByName = (users: User[]): User[] =>
   [...users].sort((a, b) => {

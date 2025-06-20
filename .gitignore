@@ -50,4 +50,6 @@ renovate.log
 
 backend/src/generated/
 
-backend/src/assets/users.json
+
+.env
+.env.local
