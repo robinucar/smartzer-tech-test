@@ -1,14 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalImage,
-  ModalFooter,
-  CloseButton,
-  DownloadButton,
-  MetaText,
-} from './UserImageModal.style';
 
 interface UserImageModalProps {
   imageUrl: string;
@@ -50,54 +40,66 @@ export const UserImageModal: FC<UserImageModalProps> = ({
       link.click();
       document.body.removeChild(link);
 
-      URL.revokeObjectURL(blobUrl); // Clean up
+      URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error('Failed to download image:', error);
     }
   };
 
   return (
-    <ModalOverlay
+    <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="image-modal-title"
+      className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
     >
-      <ModalContent>
-        <ModalHeader>
-          <h2 id="image-modal-title">{userName}</h2>
-          <CloseButton onClick={onClose} aria-label="Close image modal">
+      <div className="relative bg-white w-full max-w-4xl rounded-lg shadow-xl p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2
+            id="image-modal-title"
+            className="text-lg font-semibold text-gray-900"
+          >
+            {userName}
+          </h2>
+          <button
+            onClick={onClose}
+            aria-label="Close image modal"
+            className="text-2xl font-bold text-gray-500 hover:text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-700"
+          >
             ×
-          </CloseButton>
-        </ModalHeader>
+          </button>
+        </div>
 
         {imageError ? (
-          <p role="alert" style={{ padding: '1rem', textAlign: 'center' }}>
+          <p role="alert" className="py-6 text-center text-sm text-red-700">
             Failed to load image.
           </p>
         ) : (
-          <ModalImage
+          <img
             src={imageUrl}
-            alt={`Profile image of ${userName}`}
-            style={{ maxWidth: '1000px', maxHeight: '1000px' }}
+            alt={`${userName}'s profile`}
+            className="mx-auto max-w-full max-h-[1000px] rounded-md border border-gray-200"
           />
         )}
 
-        <ModalFooter>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6">
           {imageSize && !imageError && (
-            <MetaText>
+            <p className="text-sm text-gray-600">
               Original size: {imageSize.width}px × {imageSize.height}px
-            </MetaText>
+            </p>
           )}
+
           {!imageError && (
-            <DownloadButton
+            <button
               onClick={handleDownload}
               aria-label="Download full quality image"
+              className="self-start sm:self-auto px-4 py-2 rounded bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600"
             >
               Download
-            </DownloadButton>
+            </button>
           )}
-        </ModalFooter>
-      </ModalContent>
-    </ModalOverlay>
+        </div>
+      </div>
+    </div>
   );
 };
