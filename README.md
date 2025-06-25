@@ -123,12 +123,6 @@ npm install --save-dev concurrently
 npm run dev
 ```
 
-- Make sure frontend has .env file and set:
-
-```
-VITE_API_URL=http://localhost:3333/api
-```
-
 ## 🐳 Docker Compose
 
 To run both backend and frontend in containers:
