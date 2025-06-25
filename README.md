@@ -117,7 +117,6 @@ http://localhost:3333/api/users
 ```
 
 8. Optional: To start both backend and frontend together locally:
-   n
 
 ```
 npm install --save-dev concurrently
