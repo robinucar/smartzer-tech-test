@@ -6,7 +6,7 @@ A full-stack user management system built for the Smartzer tech test using a mod
 - ✅ A React + Vite frontend (styled with styled-components)
 - ✅ Shared types across backend and frontend
 - ✅ End-to-end tests, component tests, and CI/CD
-- ✅ Dockerized development and deployment
+- ✅ Dockerised development and deployment
 
 ---
 
@@ -34,7 +34,7 @@ A full-stack user management system built for the Smartzer tech test using a mod
 
 - TypeScript
 
-- REST API with .json data store
+- REST API with PostgreSQL
 
 - Jest (unit tests)
 
@@ -263,8 +263,6 @@ docker-compose up --build
 
 ## 🔧 Potential Improvements
 
-- 🗃 Real Database Integration
-  Replace the local .json data store with a persistent database such as PostgreSQL or MongoDB using an ORM like Prisma or Mongoose.
 - 🚀 Cloud Deployment:
   Deploy to platforms like Render, Railway, Fly.io, or AWS/GCP for hosting backend, frontend, and database in a production environment.
 - 🔐 User Authentication with AWS Cognito:
