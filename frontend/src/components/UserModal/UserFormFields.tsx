@@ -1,17 +1,6 @@
 import { FC, ChangeEvent, ReactNode } from 'react';
-import {
-  Field,
-  Label,
-  Input,
-  TextArea,
-  DateInput,
-  CheckboxContainer,
-  ErrorText,
-  FlexRow,
-  FormFieldsWrapper,
-  HelperText,
-} from './UserModal.style';
 import { User } from '@shared-types';
+import { FormField } from './FormField/FormField';
 
 interface UserFormFieldsProps {
   formData: Partial<User>;
@@ -28,79 +17,84 @@ export const UserFormFields: FC<UserFormFieldsProps> = ({
   handleChange,
   children,
 }) => (
-  <FormFieldsWrapper>
-    <Field>
-      <Label htmlFor="firstName">First Name</Label>
-      <Input
-        name="firstName"
-        value={formData.firstName || ''}
-        onChange={handleChange}
-      />
-      {errors.firstName && <ErrorText>{errors.firstName}</ErrorText>}
-      <HelperText>
+  <div className="space-y-6">
+    {/* First Name */}
+    <FormField
+      id="firstName"
+      label="First Name"
+      value={formData.firstName}
+      onChange={handleChange}
+      error={errors.firstName}
+    >
+      <p className="mt-1 text-xs text-gray-500">
         Letters, spaces, hyphens (-), and apostrophes (') allowed
-      </HelperText>
-    </Field>
+      </p>
+    </FormField>
 
-    <Field>
-      <Label htmlFor="lastName">Last Name</Label>
-      <Input
-        name="lastName"
-        value={formData.lastName || ''}
-        onChange={handleChange}
-      />
-      {errors.lastName && <ErrorText>{errors.lastName}</ErrorText>}
-      <HelperText>
+    {/* Last Name */}
+    <FormField
+      id="lastName"
+      label="Last Name"
+      value={formData.lastName}
+      onChange={handleChange}
+      error={errors.lastName}
+    >
+      <p className="mt-1 text-xs text-gray-500">
         Letters, spaces, hyphens (-), and apostrophes (') allowed
-      </HelperText>
-    </Field>
+      </p>
+    </FormField>
 
-    <Field>
-      <Label htmlFor="email">Email</Label>
-      <Input
-        name="email"
-        value={formData.email || ''}
-        onChange={handleChange}
-      />
-      {errors.email && <ErrorText>{errors.email}</ErrorText>}
-    </Field>
+    {/* Email */}
+    <FormField
+      id="email"
+      label="Email"
+      type="email"
+      value={formData.email}
+      onChange={handleChange}
+      error={errors.email}
+    />
 
-    <FlexRow>
-      <Field style={{ flex: 1 }}>
-        <Label htmlFor="bio">Bio</Label>
-        <TextArea
-          name="bio"
-          value={formData.bio || ''}
+    {/* Bio + Profile Image / Children */}
+    <div className="flex flex-col lg:flex-row gap-5">
+      <div className="flex-1">
+        <FormField
+          id="bio"
+          label="Bio"
+          type="textarea"
+          value={formData.bio}
           onChange={handleChange}
+          error={errors.bio}
+          optional
         />
-      </Field>
-      {children}
-    </FlexRow>
+      </div>
+      {children && (
+        <div className="flex-1 mt-4 lg:mt-0 lg:ml-12">{children}</div>
+      )}
+    </div>
 
-    <FlexRow>
-      <div>
-        <Label htmlFor="dob">DOB</Label>
-        <DateInput
-          name="dob"
+    {/* DOB & Terms */}
+    <div className="flex flex-col lg:flex-row gap-4 items-start">
+      <div className="flex-1">
+        <FormField
+          id="dob"
+          label="DOB"
           type="date"
-          value={formData.dob || ''}
+          value={formData.dob}
           onChange={handleChange}
+          error={errors.dob}
         />
-        {errors.dob && <ErrorText>{errors.dob}</ErrorText>}
       </div>
 
-      <CheckboxContainer htmlFor="acceptedTerms">
-        Accept T&Cs
-        <input
+      <div className="flex-1 mt-4 lg:mt-0 lg:ml-12">
+        <FormField
           id="acceptedTerms"
+          label="Accept T&Cs"
           type="checkbox"
-          name="acceptedTerms"
-          checked={formData.acceptedTerms || false}
+          value={formData.acceptedTerms}
           onChange={handleChange}
+          error={errors.acceptedTerms}
         />
-      </CheckboxContainer>
-    </FlexRow>
-
-    {errors.acceptedTerms && <ErrorText>{errors.acceptedTerms}</ErrorText>}
-  </FormFieldsWrapper>
+      </div>
+    </div>
+  </div>
 );
