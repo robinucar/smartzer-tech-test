@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   getAllUsers,
+  getUserCount,
   getUserById,
   createUser,
   updateUser,
@@ -19,14 +20,50 @@ describe('userServices', () => {
     jest.clearAllMocks();
   });
 
-  it('getAllUsers should return all users', async () => {
-    (prisma.user.findMany as jest.Mock).mockResolvedValue([
-      userWithBio,
-      userWithoutBio,
-    ]);
-    const result = await getAllUsers();
-    expect(prisma.user.findMany).toHaveBeenCalled();
-    expect(result).toEqual([userWithBio, userWithoutBio]);
+  describe('getAllUsers', () => {
+    it('should return paginated and filtered users', async () => {
+      (prisma.user.findMany as jest.Mock).mockResolvedValue([
+        userWithBio,
+        userWithoutBio,
+      ]);
+
+      const result = await getAllUsers({ page: 1, limit: 10, q: 'john' });
+
+      expect(prisma.user.findMany).toHaveBeenCalledWith({
+        where: {
+          OR: [
+            { firstName: { contains: 'john', mode: 'insensitive' } },
+            { lastName: { contains: 'john', mode: 'insensitive' } },
+            { email: { contains: 'john', mode: 'insensitive' } },
+          ],
+        },
+        skip: 0,
+        take: 10,
+        orderBy: { firstName: 'asc' },
+      });
+
+      expect(result).toEqual([userWithBio, userWithoutBio]);
+    });
+  });
+
+  describe('getUserCount', () => {
+    it('should return total number of filtered users', async () => {
+      (prisma.user.count as jest.Mock).mockResolvedValue(42);
+
+      const result = await getUserCount('john');
+
+      expect(prisma.user.count).toHaveBeenCalledWith({
+        where: {
+          OR: [
+            { firstName: { contains: 'john', mode: 'insensitive' } },
+            { lastName: { contains: 'john', mode: 'insensitive' } },
+            { email: { contains: 'john', mode: 'insensitive' } },
+          ],
+        },
+      });
+
+      expect(result).toBe(42);
+    });
   });
 
   it('getUserById should return a specific user', async () => {

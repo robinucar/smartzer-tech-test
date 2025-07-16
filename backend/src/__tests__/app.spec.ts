@@ -1,6 +1,5 @@
 import request from 'supertest';
 import app from '../app';
-
 import { prisma } from '../__tests__/mocks/prismaMock';
 
 jest.mock('../utils/prisma', () => ({
@@ -21,6 +20,7 @@ describe('Express App', () => {
         bio: 'Test user bio',
       },
     ]);
+    (prisma.user.count as jest.Mock).mockResolvedValue(1);
   });
 
   afterEach(() => {
@@ -39,12 +39,20 @@ describe('Express App', () => {
     expect(res.body).toEqual({ status: 'OK' });
   });
 
-  it('GET /api/users should return array of users', async () => {
-    const res = await request(app).get('/api/users');
-    expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+  it('GET /api/users should return paginated response with users array', async () => {
+    const res = await request(app).get('/api/users?page=1&limit=10&q=');
 
-    const user = res.body[0];
+    expect(res.status).toBe(200);
+
+    expect(res.body).toMatchObject({
+      users: expect.any(Array),
+      total: 1,
+      page: 1,
+      totalPages: 1,
+      q: '',
+    });
+
+    const user = res.body.users[0];
     expect(user).toHaveProperty('id');
     expect(user).toHaveProperty('firstName');
     expect(user).toHaveProperty('lastName');

@@ -18,9 +18,8 @@ describe('getUsers', () => {
   });
 
   it('should return users when response is OK', async () => {
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      ok: true,
-      json: async () => [
+    const mockResponse = {
+      users: [
         {
           id: 1,
           firstName: 'Alice',
@@ -32,17 +31,28 @@ describe('getUsers', () => {
           bio: 'Frontend engineer',
         },
       ],
+      total: 1,
+      page: 1,
+      totalPages: 1,
+      q: '',
+    };
+
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => mockResponse,
     });
 
-    const result = await getUsers();
-    expect(Array.isArray(result)).toBe(true);
-    expect(result[0].firstName).toBe('Alice');
+    const result = await getUsers({ page: 1, limit: 10, q: '' });
+    expect(Array.isArray(result.users)).toBe(true);
+    expect(result.users[0].firstName).toBe('Alice');
   });
 
   it('should throw an error when response is not OK', async () => {
     (fetch as jest.Mock).mockResolvedValueOnce({ ok: false });
 
-    await expect(getUsers()).rejects.toThrow('Failed to fetch users');
+    await expect(getUsers({ page: 1, limit: 10, q: '' })).rejects.toThrow(
+      'Failed to fetch users',
+    );
   });
 });
 
@@ -114,7 +124,7 @@ describe('updateUser', () => {
       json: async () => mockResponse,
     });
 
-    const result = (await updateUser('1', mockData)) as User;
+    const result = await updateUser('1', mockData);
     expect(result.firstName).toBe('Updated');
     expect(fetch).toHaveBeenCalledWith(
       'http://localhost:3333/api/users/1',

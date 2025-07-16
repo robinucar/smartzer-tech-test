@@ -9,6 +9,7 @@ import { requireValidUserPayload } from '../middlewares/requireValidUserPayload'
 
 import {
   getAllUsers,
+  getUserCount,
   getUserById,
   createUser,
   updateUser,
@@ -19,15 +20,32 @@ const router = Router();
 
 /**
  * @route GET /api/users
- * @description Fetch all users.
+ * @description Fetch all users with pagination and search
  */
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    const users = await getAllUsers();
-    return res.status(200).json(users);
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(
+      Math.max(1, parseInt(req.query.limit as string) || 10),
+      100,
+    );
+    const q = (req.query.q as string) || '';
+
+    const [users, total] = await Promise.all([
+      getAllUsers({ page, limit, q }),
+      getUserCount(q),
+    ]);
+
+    return res.status(200).json({
+      users,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      q, // ✅ Echo search query (optional)
+    });
   } catch (error) {
     console.error('Fetch users error:', error);
-    return serverError(res, 'Failed to read users');
+    return serverError(res, 'Failed to fetch users');
   }
 });
 
