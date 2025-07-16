@@ -2,16 +2,36 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getUsers, createUser, updateUser, deleteUser } from '../lib/api/users';
 import { User } from '@shared-types';
 
-export const useUser = () => {
+interface UserListResponse {
+  users: User[];
+  total: number;
+  page: number;
+  totalPages: number;
+  q: string;
+}
+
+export const useUser = (page: number, query: string) => {
   const queryClient = useQueryClient();
 
-  const {
-    data: users = [],
-    isLoading,
-    isError,
-  } = useQuery<User[]>({
-    queryKey: ['users'],
-    queryFn: getUsers,
+  const { data, isLoading, isError } = useQuery<UserListResponse>({
+    queryKey: ['users', page, query],
+    queryFn: () => getUsers({ page, q: query }),
+    placeholderData: () => {
+      const previous = queryClient.getQueryData<UserListResponse>([
+        'users',
+        page - 1,
+        query,
+      ]);
+      return (
+        previous ?? {
+          users: [],
+          total: 0,
+          page,
+          totalPages: 1,
+          q: query,
+        }
+      );
+    },
   });
 
   const createMutation = useMutation({
@@ -37,7 +57,11 @@ export const useUser = () => {
   });
 
   return {
-    users,
+    users: data?.users ?? [],
+    total: data?.total ?? 0,
+    page: data?.page ?? 1,
+    totalPages: data?.totalPages ?? 1,
+    q: data?.q ?? '',
     isLoading,
     isError,
     createUser: createMutation.mutate,

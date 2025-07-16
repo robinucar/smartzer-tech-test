@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 
+const DEFAULT_PAGE = 1;
+
 export const getPageFromURL = (): number => {
+  if (typeof window === 'undefined') return DEFAULT_PAGE;
+
   const params = new URLSearchParams(window.location.search);
-  const page = parseInt(params.get('page') || '1', 10);
-  return isNaN(page) || page < 1 ? 1 : page;
+  const page = parseInt(params.get('page') || String(DEFAULT_PAGE), 10);
+  return isNaN(page) || page < 1 ? DEFAULT_PAGE : page;
 };
 
 export const usePaginatedQueryParam = (): [

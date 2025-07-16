@@ -19,17 +19,27 @@ describe('User Routes', () => {
   });
 
   describe('GET /api/users', () => {
-    it('should return all users', async () => {
+    it('should return paginated users and metadata', async () => {
       (prisma.user.findMany as jest.Mock).mockResolvedValue([
         userWithBio,
         userWithoutBio,
       ]);
+      (prisma.user.count as jest.Mock).mockResolvedValue(2);
 
-      const res = await request(app).get('/api/users');
+      const res = await request(app).get('/api/users?page=1&limit=2&q=john');
 
       expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(2);
+      expect(res.body).toMatchObject({
+        users: expect.any(Array),
+        total: 2,
+        page: 1,
+        totalPages: 1,
+        q: 'john',
+      });
+
+      expect(res.body.users).toHaveLength(2);
       expect(prisma.user.findMany).toHaveBeenCalled();
+      expect(prisma.user.count).toHaveBeenCalled();
     });
   });
 
