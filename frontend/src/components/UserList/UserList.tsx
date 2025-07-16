@@ -6,7 +6,7 @@ import { ErrorMessage } from '../shared/ErrorMessage/ErrorMessage';
 import { SuccessMessage } from '../shared/SuccessMessage/SuccessMessage';
 import { capitalize } from '../../utils/userUtils';
 import { Pagination } from '../shared/Pagination/Pagination';
-
+import { formatDate } from '../../utils/dateUtils';
 interface UserListProps {
   users: User[];
   currentPage: number;
@@ -103,7 +103,7 @@ export const UserList = ({
                       {capitalize(user.firstName)} {capitalize(user.lastName)}
                     </td>
                     <td className="px-4 py-2 text-sm text-gray-700">
-                      {user.dob}
+                      {formatDate(user.dob)}
                     </td>
                     <td className="px-4 py-2">
                       <button
